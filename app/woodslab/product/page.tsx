@@ -1,5 +1,5 @@
 'use client'
-
+import { Suspense } from 'react' // ✅ 1. เพิ่มบรรทัดนี้
 import React, { useState, useEffect, useRef, useCallback } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
 import { getProductDetail, getActiveDiscounts, getRecommendProducts, purchaseProduct } from '../actions'
@@ -42,7 +42,7 @@ const STATUS_META: any = {
   draft:      { label: "Draft",    canBuy: false, overlay: false },
 }
 
-export default function ProductDetailPage() {
+function ProductContent() {
   const searchParams = useSearchParams()
   const router = useRouter()
   const idParam = searchParams.get('id')
@@ -485,5 +485,12 @@ export default function ProductDetailPage() {
         </div>
       </section>
     </div>
+  )
+}
+export default function ProductPageWrapper() {
+  return (
+    <Suspense fallback={<div className="p-10 text-center">Loading Product...</div>}>
+      <ProductContent />
+    </Suspense>
   )
 }
