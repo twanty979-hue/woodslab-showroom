@@ -3,12 +3,13 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   /* config options here */
 
-  // ✅ เก็บอันนี้ไว้ (เพราะ Vercel ยังไม่ด่า)
+  // เก็บอันนี้ไว้ถ้าอยากข้าม Error ภาษา (TypeScript)
+  // แต่ถ้าอยากให้ตรวจภาษาด้วย ก็ลบก้อนนี้ออกได้เลยครับ
   typescript: {
-    ignoreBuildErrors: true,
+    ignoreBuildErrors: true, 
   },
-  
-  // ❌ ลบส่วน eslint: { ... } ทิ้งไปเลยครับ เพราะ Next.js 16 ไม่รับแล้ว
+
+  // ❌ ลบก้อน eslint ออกไปเลยครับ (ห้ามใส่)
 };
 
 export default nextConfig;
