@@ -1,5 +1,6 @@
 'use client'
 export const dynamic = 'force-dynamic'
+import { Suspense } from 'react' // ✅ เพิ่มบรรทัดนี้
 import React, { useState, useEffect, useCallback, useRef } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation' // ✅ Import เพิ่ม
 import { getProducts, getActiveDiscounts, getMinMax, getRangeValues, getDistinctOptions, type FilterState } from './actions'
@@ -36,7 +37,7 @@ const HEADERS = [
   { key: "status", label: "State" },
 ]
 
-export default function WoodSlabPage() {
+function WoodSlabContent() {
   // --- Hooks ---
   const router = useRouter()
   const searchParams = useSearchParams()
@@ -603,5 +604,13 @@ export default function WoodSlabPage() {
         </div>
       </div>
     </div>
+  )
+}
+// ✅ ตัวครอบใหม่ (พระเอกของเรา)
+export default function WoodSlabPageWrapper() {
+  return (
+    <Suspense fallback={<div className="p-10 text-center">Loading...</div>}>
+      <WoodSlabContent />
+    </Suspense>
   )
 }
