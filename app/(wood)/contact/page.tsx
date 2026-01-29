@@ -134,19 +134,21 @@ export default function ContactPage() {
          </div>
       </section>
 
-      {/* 3. Map Section (Visual Only) */}
-      <section className="w-full h-[400px] bg-zinc-200 grayscale relative">
-         <iframe 
-           width="100%" 
-           height="100%" 
-           frameBorder="0" 
-           scrolling="no" 
-           marginHeight={0} 
-           marginWidth={0} 
-           src="https://maps.google.com/maps?width=100%25&amp;height=600&amp;hl=en&amp;q=Thong%20Lor,%20Bangkok+(WOODSLABS)&amp;t=&amp;z=14&amp;ie=UTF8&amp;iwloc=B&amp;output=embed"
-           className="opacity-60 hover:opacity-100 transition-opacity duration-500"
-         ></iframe>
-         <div className="absolute inset-0 pointer-events-none border-t border-b border-white/20"></div>
+      {/* 3. Map Section (Updated with your coordinates) */}
+      <section className="w-full h-[450px] bg-zinc-200 grayscale relative">
+          <iframe 
+            width="100%" 
+            height="100%" 
+            frameBorder="0" 
+            scrolling="no" 
+            marginHeight={0} 
+            marginWidth={0} 
+            // ใส่พิกัดของคุณใน q= และปรับ z= เพื่อกำหนดระดับการซูม (ในที่นี้คือ 16)
+            src="https://maps.google.com/maps?q=13.812060234281141,100.52762275460208&t=&z=16&ie=UTF8&iwloc=&output=embed"
+            className="opacity-70 hover:opacity-100 transition-opacity duration-700 grayscale hover:grayscale-0"
+          ></iframe>
+          {/* Overlay เส้นขอบเพื่อให้ดูหรูหราเข้ากับธีม */}
+          <div className="absolute inset-0 pointer-events-none border-t border-b border-black/5 shadow-inner"></div>
       </section>
 
       {/* 4. Footer */}

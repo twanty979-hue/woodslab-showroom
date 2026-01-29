@@ -11,7 +11,7 @@ const FadeInSection = ({ children, className }: { children: React.ReactNode, cla
   useEffect(() => {
     const observer = new IntersectionObserver(entries => {
       entries.forEach(entry => setVisible(entry.isIntersecting));
-    }, { threshold: 0.1 }); // Trigger เมื่อเห็น 10%
+    }, { threshold: 0.1 });
     if (domRef.current) observer.observe(domRef.current);
     return () => observer.disconnect();
   }, []);
@@ -29,7 +29,22 @@ const FadeInSection = ({ children, className }: { children: React.ReactNode, cla
 };
 
 export default function AboutPage() {
-  
+  // --- Slideshow Logic ---
+  const heroImages = [
+    "https://i.pinimg.com/1200x/49/1c/63/491c6398d55fbfbcaea1f72c28476fbb.jpg",
+    "https://i.pinimg.com/736x/d0/00/db/d000dbd3b5ba2ef378a758bf3616a69f.jpg",
+    "https://i.pinimg.com/1200x/62/47/fa/6247fa479cb8f3687125c5516e59daed.jpg"
+  ];
+
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentImageIndex((prevIndex) => (prevIndex + 1) % heroImages.length);
+    }, 5000); // เปลี่ยนรูปทุกๆ 5 วินาที
+    return () => clearInterval(timer);
+  }, [heroImages.length]);
+
   const stories = [
     {
       subtitle: "The Journey",
@@ -64,24 +79,32 @@ export default function AboutPage() {
   return (
     <div className="bg-[#FAF9F6] text-[#1C1917] font-sans selection:bg-[#d4a373] selection:text-white min-h-screen">
       
-      {/* 1. Hero Video Section */}
+      {/* 1. Hero Image Slideshow Section */}
       <section className="relative w-full h-[60vh] md:h-[80vh] overflow-hidden bg-black">
-        <video 
-          className="absolute top-0 left-0 w-full h-full object-cover opacity-50"
-          poster="https://image.ixiumu.cn/front/brand/images/about_bg.png"
-          autoPlay muted loop playsInline
-        >
-          <source src="https://image.ixiumu.cn/video/about.mp4" type="video/mp4" />
-        </video>
-        <div className="absolute inset-0 bg-gradient-to-b from-black/10 to-black/60 flex items-center justify-center">
-            <FadeInSection>
-                <h1 className="text-white text-5xl md:text-8xl font-serif tracking-widest uppercase opacity-90 drop-shadow-2xl text-center">
-                   Our Story
-                </h1>
-                <p className="text-white/80 text-center mt-4 text-xs md:text-sm uppercase tracking-[0.3em] font-light">
-                   Crafting nature's legacy since 2016
-                </p>
-            </FadeInSection>
+        {heroImages.map((src, index) => (
+          <div
+            key={src}
+            className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
+              index === currentImageIndex ? 'opacity-60' : 'opacity-0'
+            }`}
+          >
+            <img 
+              src={src} 
+              alt={`Slide ${index}`} 
+              className="w-full h-full object-cover"
+            />
+          </div>
+        ))}
+
+        <div className="absolute inset-0 bg-gradient-to-b from-black/20 to-black/60 flex items-center justify-center">
+          <FadeInSection>
+            <h1 className="text-white text-5xl md:text-8xl font-serif tracking-widest uppercase opacity-90 drop-shadow-2xl text-center">
+              Our Story
+            </h1>
+            <p className="text-white/80 text-center mt-4 text-xs md:text-sm uppercase tracking-[0.3em] font-light">
+              Crafting nature's legacy since 2016
+            </p>
+          </FadeInSection>
         </div>
       </section>
 
@@ -108,8 +131,6 @@ export default function AboutPage() {
       <div className="space-y-0">
         {stories.map((item, index) => (
           <section key={index} className={`flex flex-col md:flex-row ${item.reverse ? 'md:flex-row-reverse' : ''} bg-white`}>
-            
-            {/* Image Side */}
             <div className="w-full md:w-1/2 h-[400px] md:h-[700px] relative overflow-hidden group">
                <img 
                  src={item.img} 
@@ -118,8 +139,6 @@ export default function AboutPage() {
                />
                <div className="absolute inset-0 bg-black/5 group-hover:bg-transparent transition-colors duration-700"></div>
             </div>
-
-            {/* Text Side */}
             <div className={`w-full md:w-1/2 p-10 md:p-24 flex flex-col justify-center ${index % 2 === 0 ? 'bg-[#FAF9F6]' : 'bg-white'}`}>
                <FadeInSection>
                  <span className="text-[#d4a373] text-[10px] font-bold uppercase tracking-[0.3em] mb-4 block">
@@ -133,7 +152,6 @@ export default function AboutPage() {
                  </p>
                </FadeInSection>
             </div>
-
           </section>
         ))}
       </div>
@@ -147,7 +165,6 @@ export default function AboutPage() {
            <p className="text-zinc-500 mb-12 max-w-lg mx-auto font-light leading-relaxed">
              Explore our curated collection of rare wood slabs, each waiting to tell its own story in your home.
            </p>
-           
            <Link 
              href="/woodslab" 
              className="group relative inline-block px-12 py-4 border border-zinc-200 text-zinc-800 uppercase tracking-[0.3em] text-[10px] font-bold transition-all duration-500 overflow-hidden"
@@ -169,7 +186,6 @@ export default function AboutPage() {
             </div>
         </div>
       </footer>
-
     </div>
   );
 }

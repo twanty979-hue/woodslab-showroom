@@ -377,14 +377,7 @@ function WoodSlabContent() {
       `}</style>
 
       <div className="wrap">
-        <button 
-          className="theme-toggle" 
-          onClick={() => setIsDark(!isDark)} 
-          title="Switch Theme"
-          suppressHydrationWarning={true}
-        >
-           {themeIcon}
-        </button>
+        
 
         <header>
           <h1>The Best <span>Wood</span></h1>

@@ -29,7 +29,22 @@ const FadeInSection = ({ children, className }: { children: React.ReactNode, cla
 };
 
 export default function FranchiseePage() {
-  
+  // --- Slideshow Logic ---
+  const heroImages = [
+    "https://i.pinimg.com/1200x/2e/d5/9f/2ed59f053fac27bfe0496a256a604de9.jpg",
+    "https://i.pinimg.com/736x/ad/53/d8/ad53d800cb11d47129d52910331bb41e.jpg",
+    "https://i.pinimg.com/736x/ed/dd/e5/eddde5a73d81e3450b8d816d7d0025de.jpg"
+  ];
+
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentImageIndex((prev) => (prev + 1) % heroImages.length);
+    }, 5000); // เปลี่ยนรูปทุกๆ 5 วินาที
+    return () => clearInterval(timer);
+  }, [heroImages.length]);
+
   const advantages = [
     {
       title: "Material Selection",
@@ -91,15 +106,23 @@ export default function FranchiseePage() {
   return (
     <div className="bg-[#FAF9F6] text-[#1C1917] font-sans selection:bg-[#d4a373] selection:text-white min-h-screen flex flex-col">
       
-      {/* 1. Hero Video */}
+      {/* 1. Hero Image Slideshow */}
       <section className="relative w-full h-[60vh] md:h-[80vh] bg-black overflow-hidden">
-        <video 
-          className="absolute top-0 left-0 w-full h-full object-cover opacity-60"
-          poster="https://image.ixiumu.cn/front/brand/images/join_dealer_bg.png"
-          autoPlay muted loop playsInline
-        >
-          <source src="https://image.ixiumu.cn/video/join_dealer.mp4" type="video/mp4" />
-        </video>
+        {heroImages.map((src, index) => (
+          <div
+            key={src}
+            className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
+              index === currentImageIndex ? 'opacity-60' : 'opacity-0'
+            }`}
+          >
+            <img 
+              src={src} 
+              alt={`Partner Slide ${index}`} 
+              className="w-full h-full object-cover"
+            />
+          </div>
+        ))}
+        
         <div className="absolute inset-0 bg-gradient-to-b from-black/20 to-black/60 flex items-center justify-center">
             <FadeInSection>
                 <h1 className="text-white text-5xl md:text-7xl font-serif tracking-widest uppercase opacity-90 drop-shadow-2xl text-center px-4">
@@ -122,7 +145,6 @@ export default function FranchiseePage() {
          <div className="space-y-0">
             {advantages.map((item, idx) => (
                <div key={idx} className={`flex flex-col md:flex-row ${item.reverse ? 'md:flex-row-reverse' : ''} bg-white group`}>
-                  {/* Image */}
                   <div className="w-full md:w-1/2 h-[400px] md:h-[600px] overflow-hidden relative">
                      <img 
                        src={item.img} 
@@ -131,7 +153,6 @@ export default function FranchiseePage() {
                      />
                      <div className="absolute inset-0 bg-black/5 group-hover:bg-transparent transition-colors duration-700"></div>
                   </div>
-                  {/* Text */}
                   <div className={`w-full md:w-1/2 p-10 md:p-24 flex flex-col justify-center ${idx % 2 === 0 ? 'bg-[#FAF9F6]' : 'bg-white'}`}>
                      <FadeInSection>
                         <span className="text-[#d4a373] text-[10px] font-bold uppercase tracking-[0.3em] mb-4 block">
@@ -148,7 +169,7 @@ export default function FranchiseePage() {
          </div>
       </section>
 
-      {/* 3. Exclusive Services (Dark Theme) */}
+      {/* 3. Exclusive Services */}
       <section className="py-32 px-6 bg-[#111] text-[#DCD3C8]">
          <div className="max-w-6xl mx-auto">
             <FadeInSection>
@@ -169,7 +190,7 @@ export default function FranchiseePage() {
          </div>
       </section>
 
-      {/* 4. Investment & Growth (High-End Poster Style) */}
+      {/* 4. Investment & Growth */}
       <section className="relative py-40 px-6 bg-fixed bg-cover bg-center" style={{ backgroundImage: 'url("https://image.ixiumu.cn/front/brand/images/join/join_shop_7.png")' }}>
          <div className="absolute inset-0 bg-black/70"></div>
          <div className="relative z-10 max-w-4xl mx-auto text-center text-white">
@@ -233,7 +254,6 @@ export default function FranchiseePage() {
             </div>
         </div>
       </footer>
-
     </div>
   );
 }
