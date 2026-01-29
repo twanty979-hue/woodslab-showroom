@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 
+import { FaLine, FaFacebookF, FaPhone } from 'react-icons/fa';
 // --- Icons ---
 const IconArrowRight = ({ className }: { className?: string }) => (
   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className={className}><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
@@ -241,20 +242,7 @@ export default function HomePage() {
          </div>
       </section>
 
-      {/* 6. Partners (Clean & Grayscale) */}
-      <section className="py-24 bg-white border-y border-zinc-100">
-         <div className="max-w-7xl mx-auto px-6 text-center">
-            <p className="text-zinc-400 text-[10px] uppercase tracking-[0.4em] mb-12">Trusted By Global Partners</p>
-            <div className="flex flex-wrap justify-center items-center gap-12 md:gap-24 opacity-60 grayscale hover:grayscale-0 transition-all duration-500">
-               {/* โลโก้ Partner จากต้นฉบับ */}
-               <img src="/front/en/partner_1.png" className="h-8 md:h-10 w-auto object-contain" alt="Partner" />
-               <img src="/front/en/partner_2.png" className="h-8 md:h-10 w-auto object-contain" alt="Partner" />
-               <img src="/front/en/partner_3.png" className="h-8 md:h-10 w-auto object-contain" alt="Partner" />
-               <img src="/front/en/partner_5.png" className="h-8 md:h-10 w-auto object-contain" alt="Partner" />
-               <img src="/front/en/partner_6.png" className="h-12 md:h-16 w-auto object-contain" alt="Partner" />
-            </div>
-         </div>
-      </section>
+      
 
       {/* 7. CTA / Visit (Dark Mode) */}
       <section className="bg-[#111] text-[#DCD3C8] py-32 px-6">
@@ -285,14 +273,39 @@ export default function HomePage() {
 
       {/* 8. Simple Footer (Contacts) */}
       <footer className="bg-[#0a0a0a] text-zinc-500 py-12 border-t border-white/5 text-center text-xs tracking-widest uppercase">
-         <div className="flex justify-center gap-8 mb-8">
-            <a href="#" className="hover:text-[#d4a373] transition-colors"><img src="/front/img/ins.png" className="w-6 h-6 opacity-50 hover:opacity-100" alt="IG"/></a>
-            <a href="#" className="hover:text-[#d4a373] transition-colors"><img src="/front/img/facebook.png" className="w-6 h-6 opacity-50 hover:opacity-100" alt="FB"/></a>
-            <a href="#" className="hover:text-[#d4a373] transition-colors"><img src="/front/img/Whatsapp.png" className="w-6 h-6 opacity-50 hover:opacity-100" alt="WA"/></a>
-         </div>
-         <p>© 2026 Woodslabs Industry Co., Ltd. All Rights Reserved.</p>
-         <p className="mt-2 normal-case opacity-50">Email: zuily@woodslabs.com.cn | Phone: +86 177 2080 3060</p>
-      </footer>
+    <div className="flex justify-center gap-8 mb-8">
+        {/* Line */}
+        <a 
+            href="https://line.me/R/ti/p/@doy2013q?oat__id=35314" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="hover:text-[#d4a373] transition-colors duration-300"
+        >
+            <FaLine className="w-6 h-6" />
+        </a>
+
+        {/* Facebook */}
+        <a 
+            href="https://www.facebook.com/wooddenthailand" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="hover:text-[#d4a373] transition-colors duration-300"
+        >
+            <FaFacebookF className="w-6 h-6" />
+        </a>
+
+        {/* Phone */}
+        <a 
+            href="tel:+66626670009" 
+            className="hover:text-[#d4a373] transition-colors duration-300"
+        >
+            <FaPhone className="w-6 h-6" />
+        </a>
+    </div>
+
+    <p>© 2026 Woodslabs Industry Co., Ltd. All Rights Reserved.</p>
+    <p className="mt-2 normal-case opacity-50">Email: woodenthailand@woodslabs.com.cn | Phone: +86 177 2080 3060</p>
+</footer>
 
     </div>
   );
