@@ -2,13 +2,33 @@
 
 import { supabaseServer } from '@/lib/supabase-server'
 import { revalidatePath } from 'next/cache'
+import { cookies } from 'next/headers'
+import { createClient } from '@supabase/supabase-js'
 
 const TABLE = "products"
 const LIST_SELECT = "id,name,sku,barcode,price,image_url,status,specs,updated_at,created_at"
 
-// ✅ Helper: เลือก Prefix ตามหมวดหมู่
-const getPrefix = (category: string) => {
-  return category === 'rough' ? 'ROUGH-' : 'WOODSLABS'
+// --- Helper Functions ---
+const getPrefix = (category: string) => category === 'rough' ? 'ROUGH-' : 'WOODSLABS'
+
+// 🔹 ฟังก์ชันสร้าง Client แบบอ่าน Cookie (สำหรับระบบ User/Auth)
+async function createAuthClient() {
+  const cookieStore = await cookies()
+  const token = cookieStore.get('sb-access-token')?.value
+
+  if (!token) return null
+
+  return createClient(
+    process.env.SUPABASE_URL!,
+    process.env.SUPABASE_ANON_KEY!,
+    {
+      global: {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    }
+  )
 }
 
 export type FilterState = {
@@ -32,29 +52,25 @@ export type FilterState = {
 // 1. ส่วนดึงข้อมูลสำหรับหน้า Main Listing
 // ==========================================
 
-// 1.1 ดึงส่วนลด (Active Discounts)
+// 1.1 ดึงส่วนลด
 export async function getActiveDiscounts() {
   const { data, error } = await supabaseServer
     .from('discounts')
     .select('*, discount_rules(*)')
     .eq('active', true)
-
-  if (error) {
-    console.error("Discount Fetch Error:", error)
-    return []
-  }
+  if (error) return []
   return data || []
 }
 
-// 1.2 ดึงรายการสินค้า (Main Fetch List) - ✅ เพิ่ม param category
+// 1.2 ดึงรายการสินค้า (Main Fetch List)
 export async function getProducts(page: number, limit: number, filters: FilterState, category: 'slabs' | 'rough' = 'slabs') {
   const offset = page * limit
-  const skuPrefix = getPrefix(category) // ✅ เลือก Prefix
+  const skuPrefix = getPrefix(category)
 
   let query = supabaseServer
     .from(TABLE)
     .select(LIST_SELECT)
-    .ilike('sku', `${skuPrefix}%`) // ✅ กรองตาม Prefix
+    .ilike('sku', `${skuPrefix}%`)
     .range(offset, offset + limit - 1)
     .order('status', { ascending: true })
     .order('updated_at', { ascending: false })
@@ -96,17 +112,11 @@ export async function getProducts(page: number, limit: number, filters: FilterSt
     query = query.or(`name.ilike.%${qq}%,barcode.ilike.%${qq}%,sku.ilike.%${qq}%`)
   }
 
-  const { data, error } = await query
-
-  if (error) {
-    console.error("Fetch Products Error:", error)
-    return []
-  }
-  
+  const { data } = await query
   return data || []
 }
 
-// 1.3 ดึง Min/Max - ✅ เพิ่ม param category
+// 1.3 ✅ กู้คืน: ดึงค่า Min/Max สำหรับ Slider
 export async function getMinMax(col: string, category: 'slabs' | 'rough' = 'slabs') {
   const skuPrefix = getPrefix(category)
 
@@ -136,7 +146,7 @@ export async function getMinMax(col: string, category: 'slabs' | 'rough' = 'slab
   }
 }
 
-// 1.4 ดึงค่าสำหรับ Histogram - ✅ เพิ่ม param category
+// 1.4 ✅ กู้คืน: ดึงค่าสำหรับ Histogram
 export async function getRangeValues(col: string, category: 'slabs' | 'rough' = 'slabs') {
   const skuPrefix = getPrefix(category)
 
@@ -151,7 +161,7 @@ export async function getRangeValues(col: string, category: 'slabs' | 'rough' = 
   return data.map((r: any) => Number(r[col])).filter(n => Number.isFinite(n))
 }
 
-// 1.5 ดึง Distinct Options - ✅ เพิ่ม param category
+// 1.5 ✅ กู้คืน: ดึงตัวเลือกสำหรับ Dropdown (Type, Material, Panel)
 export async function getDistinctOptions(category: 'slabs' | 'rough' = 'slabs') {
   const skuPrefix = getPrefix(category)
 
@@ -185,28 +195,17 @@ export async function getDistinctOptions(category: 'slabs' | 'rough' = 'slabs') 
 // 2. ส่วน Product Detail
 // ==========================================
 
-// 2.1 ดึงรายละเอียดสินค้า 1 ชิ้น - ✅ เอา ilike ออกเพื่อให้หาได้ทั้ง 2 แบบจาก ID
 export async function getProductDetail(id?: string) {
   if (!id) return null
-
-  const { data, error } = await supabaseServer
-    .from(TABLE)
-    .select('*')
-    .eq('id', id)
-    // .ilike('sku', ...) <-- เอาออก เพื่อให้หน้า Detail ใช้ร่วมกันได้หมด
-    .single()
-
-  if (error || !data) return null
+  const { data } = await supabaseServer.from(TABLE).select('*').eq('id', id).single()
   return data
 }
 
-// 2.2 ดึงสินค้าแนะนำ - ✅ ฉลาดขึ้น เลือก prefix ตามสินค้าปัจจุบัน
 export async function getRecommendProducts(currentId: number | string, specs: any) {
   const type = specs?.spec_type || ""
   const material = specs?.material || ""
   const panel = specs?.panel_craft || ""
   
-  // เช็คว่าเป็น Rough หรือ Slabs
   const isRough = specs?.type === 'rough' || (specs?.sku && specs.sku.startsWith('ROUGH-'))
   const prefix = isRough ? 'ROUGH-' : 'WOODSLABS'
 
@@ -216,7 +215,7 @@ export async function getRecommendProducts(currentId: number | string, specs: an
   let q1 = supabaseServer
     .from(TABLE)
     .select(selectCols)
-    .ilike("sku", `${prefix}%`) // หาพวกเดียวกัน
+    .ilike("sku", `${prefix}%`)
     .order("updated_at", { ascending: false })
     .neq("id", currentId)
     .limit(8)
@@ -240,20 +239,82 @@ export async function getRecommendProducts(currentId: number | string, specs: an
   return data2 || []
 }
 
-// 2.3 สั่งซื้อสินค้า
 export async function purchaseProduct(id: number) {
-  const { error } = await supabaseServer
-    .from(TABLE)
-    .update({ 
-      status: 'on_request', 
-      updated_at: new Date().toISOString() 
-    })
-    .eq('id', id)
-
-  if (error) {
-    throw new Error(error.message)
-  }
-  
+  const { error } = await supabaseServer.from(TABLE).update({ status: 'on_request', updated_at: new Date().toISOString() }).eq('id', id)
+  if (error) throw new Error(error.message)
   revalidatePath('/woodslab/product')
   return { success: true }
+}
+
+// ==========================================
+// 3. ส่วนของ Favorite / Like System (✅ เวอร์ชั่นสมบูรณ์)
+// ==========================================
+
+export async function getProductLikeStatus(productId: string) {
+  const authClient = await createAuthClient()
+  let isLiked = false
+  let isLoggedIn = false
+
+  if (authClient) {
+     const { data: { user } } = await authClient.auth.getUser()
+     if (user) {
+        isLoggedIn = true 
+        const { data: fav } = await authClient
+          .from('favorites')
+          .select('id')
+          .eq('product_id', productId)
+          .eq('user_id', user.id)
+          .single()
+        if (fav) isLiked = true
+     }
+  }
+
+  const { data: product } = await supabaseServer
+    .from(TABLE)
+    .select('favorite_count')
+    .eq('id', productId)
+    .single()
+  
+  return { count: product?.favorite_count || 0, isLiked, isLoggedIn }
+}
+
+export async function toggleProductLike(productId: string) {
+  const authClient = await createAuthClient()
+  if (!authClient) throw new Error("Must be logged in to like")
+
+  const { data: { user } } = await authClient.auth.getUser()
+  if (!user) throw new Error("Invalid session")
+
+  const { data: existing } = await authClient
+    .from('favorites')
+    .select('id')
+    .eq('product_id', productId)
+    .eq('user_id', user.id)
+    .single()
+
+  if (existing) {
+    await authClient.from('favorites').delete().eq('id', existing.id)
+  } else {
+    await authClient.from('favorites').insert({ user_id: user.id, product_id: productId })
+  }
+
+  revalidatePath('/woodslab/product') 
+  return { success: true }
+}
+
+export async function getMyFavorites() {
+  const authClient = await createAuthClient()
+  if (!authClient) return []
+  const { data: { user } } = await authClient.auth.getUser()
+  if (!user) return []
+
+  const { data, error } = await authClient
+    .from('favorites')
+    .select(`product_id, products (id, name, sku, price, image_url, specs, status)`)
+    .eq('user_id', user.id)
+    .order('created_at', { ascending: false })
+
+  if (error) return []
+  const products = data?.map((item: any) => item.products).filter(Boolean) || []
+  return products
 }

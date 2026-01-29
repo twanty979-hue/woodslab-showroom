@@ -3,7 +3,7 @@ export const dynamic = 'force-dynamic'
 import { Suspense } from 'react' // ✅ เพิ่มบรรทัดนี้
 import React, { useState, useEffect, useCallback, useRef } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation' // ✅ Import เพิ่ม
-import { getProducts, getActiveDiscounts, getMinMax, getRangeValues, getDistinctOptions, type FilterState } from './actions'
+import { getProducts, getActiveDiscounts, getMinMax, getRangeValues, getDistinctOptions, type FilterState } from '../../actions/product'
 import './woodslab.css'
 
 // --- Constants & Config ---
@@ -393,20 +393,47 @@ function WoodSlabContent() {
           </div>
         </header>
 
-        {/* ✅ CATEGORY SWITCHER */}
-        <div className="cat-switcher">
-           <button 
-             className={`cat-btn ${currentCategory === 'slabs' ? 'active' : ''}`}
-             onClick={() => handleCategoryChange('slabs')}
-           >
-             Wood Slabs
-           </button>
-           <button 
-             className={`cat-btn ${currentCategory === 'rough' ? 'active' : ''}`}
-             onClick={() => handleCategoryChange('rough')}
-           >
-             Rough Wood
-           </button>
+        {/* ✅ CATEGORY SWITCHER (Sliding Gold Effect) */}
+        <div className="flex justify-center gap-6 mb-12">
+          {/* ปุ่ม Wood Slabs */}
+          <button
+            suppressHydrationWarning={true}
+            onClick={() => handleCategoryChange('slabs')}
+            className={`group relative inline-block px-12 py-4 border uppercase tracking-[0.3em] text-[10px] font-bold transition-all duration-500 overflow-hidden ${
+              currentCategory === 'slabs' ? 'border-[#d4a373]' : 'border-zinc-200 hover:border-[#d4a373]'
+            }`}
+          >
+            {/* พื้นหลังวิ่ง: ถ้า Active ให้เต็มตลอด(w-full) ถ้าไม่ Active ให้วิ่งตอน Hover */}
+            <span className={`absolute inset-0 bg-[#d4a373] transition-all duration-500 ease-out ${
+              currentCategory === 'slabs' ? 'w-full' : 'w-0 group-hover:w-full'
+            }`}></span>
+            
+            {/* ข้อความ: ต้องอยู่ชั้นบน (z-10) */}
+            <span className={`relative z-10 transition-colors duration-500 ${
+              currentCategory === 'slabs' ? 'text-white' : 'text-zinc-800 group-hover:text-white'
+            }`}>
+              Wood Slabs
+            </span>
+          </button>
+
+          {/* ปุ่ม Rough Wood */}
+          <button
+            suppressHydrationWarning={true}
+            onClick={() => handleCategoryChange('rough')}
+            className={`group relative inline-block px-12 py-4 border uppercase tracking-[0.3em] text-[10px] font-bold transition-all duration-500 overflow-hidden ${
+              currentCategory === 'rough' ? 'border-[#d4a373]' : 'border-zinc-200 hover:border-[#d4a373]'
+            }`}
+          >
+            <span className={`absolute inset-0 bg-[#d4a373] transition-all duration-500 ease-out ${
+              currentCategory === 'rough' ? 'w-full' : 'w-0 group-hover:w-full'
+            }`}></span>
+            
+            <span className={`relative z-10 transition-colors duration-500 ${
+              currentCategory === 'rough' ? 'text-white' : 'text-zinc-800 group-hover:text-white'
+            }`}>
+              Rough Wood
+            </span>
+          </button>
         </div>
 
         <div className="controls">
@@ -455,7 +482,9 @@ function WoodSlabContent() {
 
                   return (
                     <button 
+                    suppressHydrationWarning={true} // ✅ เพิ่มบรรทัดนี้เข้าไปครับ
                       key={h.key} 
+                      
                       className={`mf-h ${openKey === h.key ? "active" : ""}`}
                       onClick={() => setOpenKey(openKey === h.key ? "" : h.key)}
                     >

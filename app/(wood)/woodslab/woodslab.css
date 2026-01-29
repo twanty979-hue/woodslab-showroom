@@ -402,3 +402,25 @@ h1 span { color: var(--accent); font-style: italic; }
   z-index: 2; backdrop-filter: blur(4px);
 }
 .rec-badge.on_request { background: linear-gradient(135deg, #bf953f, #aa771c); }
+
+/* แอนิเมชันหัวใจดึ๋งๆ */
+@keyframes heart-boing {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.4); }
+  100% { transform: scale(1); }
+}
+
+.animate-boing {
+  animation: heart-boing 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.fav-btn {
+  transition: all 0.3s ease;
+  background: white;
+  border: 1px solid #f0f0f0;
+}
+
+.fav-btn:hover {
+  background: #fffafa;
+  border-color: #d4a373;
+}

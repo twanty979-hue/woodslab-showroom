@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect, useCallback } from 'react'
-import { getProducts, type ProductFilters } from './actions'
+import { getProducts, type ProductFilters } from '../../actions/product'
 import './woodslab.css'
 
 export default function WoodSlabGallery({ initialData }: { initialData: any }) {

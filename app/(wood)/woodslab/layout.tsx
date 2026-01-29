@@ -1,6 +1,6 @@
 import React from 'react'
-import Navbar from './components/Navbar' // Import Navbar ที่สร้างตะกี้
-import './woodslab.css' // ถ้าคุณมีไฟล์ css แยกก็ import ตรงนี้
+// import Navbar from '@/components/Navbar' // ❌ ปิดไว้ก่อนเพราะ Layout ใหญ่มีแล้ว
+import './woodslab.css' // อย่าลืมไฟล์ css นี้นะครับ
 
 export default function WoodSlabLayout({
   children,
@@ -9,7 +9,7 @@ export default function WoodSlabLayout({
 }) {
   return (
     <div className="bg-[#FAF9F6] text-[#1C1917] font-sans selection:bg-[#d4a373] selection:text-white scroll-smooth min-h-screen">
-       {/* ใส่ Font และ Style Global ที่จำเป็น */}
+       {/* Styles & Fonts เฉพาะหน้านี้ */}
        <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Noto+Serif+Thai:wght@300;400;600&family=Noto+Sans+Thai:wght@300;400&display=swap');
         
@@ -24,10 +24,11 @@ export default function WoodSlabLayout({
         .delay-300 { transition-delay: 0.3s; }
       `}</style>
 
-      {/* เรียกใช้ Navbar ที่นี่ มันจะอยู่บนสุดของทุกหน้า */}
-      <Navbar />
+      {/* ⚠️ ถ้าเปิดบรรทัดล่างนี้ Navbar จะซ้อนกัน 2 อันครับ 
+         เพราะ RootLayout (app/layout.tsx) มี Navbar ครอบให้อยู่แล้ว
+      */}
+      {/* <Navbar /> */}
 
-      {/* เนื้อหาของแต่ละหน้า (page.tsx) จะถูกแสดงตรงนี้ */}
       <main>
         {children}
       </main>
