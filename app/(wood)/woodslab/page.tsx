@@ -1,8 +1,8 @@
 'use client'
 export const dynamic = 'force-dynamic'
-import { Suspense } from 'react' // ✅ เพิ่มบรรทัดนี้
+import { Suspense } from 'react'
 import React, { useState, useEffect, useCallback, useRef } from 'react'
-import { useRouter, useSearchParams } from 'next/navigation' // ✅ Import เพิ่ม
+import { useRouter, useSearchParams } from 'next/navigation'
 import { getProducts, getActiveDiscounts, getMinMax, getRangeValues, getDistinctOptions, type FilterState } from '../../actions/product'
 import './woodslab.css'
 
@@ -38,14 +38,10 @@ const HEADERS = [
 ]
 
 function WoodSlabContent() {
-  // --- Hooks ---
   const router = useRouter()
   const searchParams = useSearchParams()
-  
-  // ✅ อ่าน Category จาก URL (Default = slabs)
   const currentCategory = (searchParams.get('cat') as 'slabs' | 'rough') || 'slabs'
 
-  // --- State ---
   const [isDark, setIsDark] = useState(false)
   const [mounted, setMounted] = useState(false) 
   
@@ -98,9 +94,15 @@ function WoodSlabContent() {
 
   const getSizeText = (specs: any) => {
     if (!specs || typeof specs !== "object") return ""
-    // ถ้าเป็น Rough Wood อาจจะมี size_raw
     if (specs.size_raw) return specs.size_raw
     return specs.size_text || specs.size || specs.dimension || specs.dimensions || specs.Size || ""
+  }
+
+  // ✅ Helper ใหม่: ดึงจำนวนสต็อกจากตาราง stock (รวมทุกสาขา หรือสาขาเดียวแล้วแต่ query)
+  const getStockQty = (row: any) => {
+    if (!row.stock || !Array.isArray(row.stock)) return 0;
+    // รวม qty จากทุก record ใน stock array (กรณีมีหลายสาขา)
+    return row.stock.reduce((sum: number, item: any) => sum + (parseFloat(item.qty) || 0), 0);
   }
 
   const normalizeStatus = (raw: string) => {
@@ -110,12 +112,24 @@ function WoodSlabContent() {
     return s
   }
 
-  const getEffectiveStatus = (row: any) => {
+const getEffectiveStatus = (row: any) => {
+    // 1. เช็คสต็อกจริงจากตาราง stock
+    const qty = getStockQty(row);
+    if (qty <= 0) return "sold"; 
+
+    // 2. ถ้าสต็อกยังมี ให้เช็ค Status ที่ตั้งไว้
     const st = normalizeStatus(row?.status)
+    
     if (st === "draft") return "draft"
     if (st === "on_request") return "on_request"
-    const p = row?.specs?.pending
-    if (p === true || p === "true") return "pending"
+    
+    // ❌ ลบ หรือ Comment 2 บรรทัดนี้ทิ้งครับ ❌
+    // const p = row?.specs?.pending
+    // if (p === true || p === "true") return "pending"
+    
+    // ถ้า status เป็น reserved/pending ให้ยึดตามนั้น
+    if (st === "pending" || st === "reserved") return "pending"
+    
     if (st) return st
     return "available"
   }
@@ -217,13 +231,9 @@ function WoodSlabContent() {
     return bins.slice(0, 12)
   }
 
-  // --- Event Handlers ---
-  
-  // ✅ เปลี่ยนหมวดหมู่ (เปลี่ยน URL)
   const handleCategoryChange = (cat: 'slabs' | 'rough') => {
     router.push(`/woodslab?cat=${cat}`)
     setPage(0)
-    // Reset Filters when switching categories might be good UX
     setFilters(prev => ({ ...prev, type: "", material: "", panel: "" }))
   }
 
@@ -246,33 +256,27 @@ function WoodSlabContent() {
     setPage(0)
   }
 
-  // --- Effects ---
-
   useEffect(() => {
     setMounted(true)
   }, [])
 
-  // ✅ Reload Options when Category Changes
   useEffect(() => {
     const init = async () => {
       const discs = await getActiveDiscounts()
       setActiveDiscounts(discs)
-      // ส่ง category ไปเพื่อให้ได้ options ที่ถูกต้อง
       const opts = await getDistinctOptions(currentCategory)
       setOptions(opts)
       
-      // Reset Range Stats on category change
       setRangeStats({ length: null, width: null, thickness: null })
       setRangePresets({ length: null, width: null, thickness: null })
     }
     init()
-  }, [currentCategory]) // Re-run when category changes
+  }, [currentCategory])
 
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true)
       try {
-        // ✅ ส่ง currentCategory ไปให้ getProducts
         let rows = await getProducts(page, LIMIT, filters, currentCategory)
         
         if (filters.discount === 'yes') {
@@ -297,7 +301,7 @@ function WoodSlabContent() {
     }
 
     fetchData()
-  }, [page, filters, activeDiscounts, getProductDiscount, currentCategory]) // ✅ Dependency เพิ่ม currentCategory
+  }, [page, filters, activeDiscounts, getProductDiscount, currentCategory])
 
   useEffect(() => {
     const key = openKey as keyof typeof RANGE_COLS
@@ -305,7 +309,6 @@ function WoodSlabContent() {
 
     if (!rangeStats[key]) {
        setRangeStats((prev: any) => ({ ...prev, [key]: { loading: true } }))
-       // ✅ ส่ง currentCategory ไปหา MinMax
        getMinMax(RANGE_COLS[key], currentCategory).then(res => {
          setRangeStats((prev: any) => ({ ...prev, [key]: res }))
        })
@@ -313,7 +316,6 @@ function WoodSlabContent() {
 
     if (!rangePresets[key]) {
       setRangePresets((prev: any) => ({ ...prev, [key]: { loading: true } }))
-      // ✅ ส่ง currentCategory ไปหา Range
       getRangeValues(RANGE_COLS[key], currentCategory).then(vals => {
         const presets = buildPresetsFromValues(key, vals)
         setRangePresets((prev: any) => ({ ...prev, [key]: presets.length ? presets : false }))
@@ -321,19 +323,15 @@ function WoodSlabContent() {
     }
   }, [openKey, currentCategory])
 
-
-  // --- Render ---
-  
-  const themeIcon = mounted && isDark ? "☾" : "☀" 
-
   const renderBadge = (status: string) => {
     const s = normalizeStatus(status)
+    // ถ้า available ไม่ต้องโชว์ badge
     if (!s || s === "available") return null
     
     const STATUS_BADGE: Record<string, any> = {
        on_request: { text: "มีคนกำลังสนใจ", style: "pill" }, 
        pending:    { text: "BOOKED", jp: "Reserved", style: "circle" },
-       sold:       { text: "BOOKED", jp: "SOLD OUT", style: "circle" },
+       sold:       { text: "SOLD OUT", jp: "Sold", style: "circle" }, // เปลี่ยนตรงนี้ให้ชัดเจน
        reserved:   { text: "RESERVED", style: "pill" },
        archived:   { text: "ARCHIVE", style: "pill" },
        draft:      { text: "DRAFT", style: "pill" },
@@ -367,7 +365,6 @@ function WoodSlabContent() {
         .price-new { color: #e11d48; font-weight: 700; font-size: 1.1em; }
         [data-theme="dark"] .price-new { color: #fb7185; }
         
-        /* CSS for Category Tabs */
         .cat-switcher { display: flex; justify-content: center; margin-bottom: 20px; gap: 10px; }
         .cat-btn { background: transparent; border: 2px solid #ddd; padding: 8px 20px; border-radius: 30px; font-weight: 600; color: #666; cursor: pointer; transition: all 0.2s; }
         .cat-btn:hover { border-color: #999; color: #333; }
@@ -378,7 +375,6 @@ function WoodSlabContent() {
 
       <div className="wrap">
         
-
         <header>
           <h1>The Best <span>Wood</span></h1>
           <div className="subtitle">
@@ -386,9 +382,7 @@ function WoodSlabContent() {
           </div>
         </header>
 
-        {/* ✅ CATEGORY SWITCHER (Sliding Gold Effect) */}
         <div className="flex justify-center gap-6 mb-12">
-          {/* ปุ่ม Wood Slabs */}
           <button
             suppressHydrationWarning={true}
             onClick={() => handleCategoryChange('slabs')}
@@ -396,12 +390,10 @@ function WoodSlabContent() {
               currentCategory === 'slabs' ? 'border-[#d4a373]' : 'border-zinc-200 hover:border-[#d4a373]'
             }`}
           >
-            {/* พื้นหลังวิ่ง: ถ้า Active ให้เต็มตลอด(w-full) ถ้าไม่ Active ให้วิ่งตอน Hover */}
             <span className={`absolute inset-0 bg-[#d4a373] transition-all duration-500 ease-out ${
               currentCategory === 'slabs' ? 'w-full' : 'w-0 group-hover:w-full'
             }`}></span>
             
-            {/* ข้อความ: ต้องอยู่ชั้นบน (z-10) */}
             <span className={`relative z-10 transition-colors duration-500 ${
               currentCategory === 'slabs' ? 'text-white' : 'text-zinc-800 group-hover:text-white'
             }`}>
@@ -409,7 +401,6 @@ function WoodSlabContent() {
             </span>
           </button>
 
-          {/* ปุ่ม Rough Wood */}
           <button
             suppressHydrationWarning={true}
             onClick={() => handleCategoryChange('rough')}
@@ -475,9 +466,8 @@ function WoodSlabContent() {
 
                   return (
                     <button 
-                    suppressHydrationWarning={true} // ✅ เพิ่มบรรทัดนี้เข้าไปครับ
+                      suppressHydrationWarning={true}
                       key={h.key} 
-                      
                       className={`mf-h ${openKey === h.key ? "active" : ""}`}
                       onClick={() => setOpenKey(openKey === h.key ? "" : h.key)}
                     >
@@ -492,7 +482,6 @@ function WoodSlabContent() {
                   <div className="mf-row">
                     <div className="mf-title">{HEADERS.find(x=>x.key === openKey)?.label}</div>
                     <div className="mf-options">
-                      {/* --- Options Rendering Logic --- */}
                       {["type", "material", "panel"].includes(openKey) && (
                         <>
                           <button className={`mf-opt ${filters[openKey as keyof FilterState] === "" ? "active" : ""}`} onClick={() => handleFilterChange(openKey as keyof FilterState, "")}>All</button>
@@ -510,26 +499,26 @@ function WoodSlabContent() {
                       )}
 
                       {openKey === "discount" && (
-                         <>
-                           <button className={`mf-opt ${filters.discount === "all" ? "active" : ""}`} onClick={() => handleFilterChange("discount", "all")}>All</button>
-                           <button className={`mf-opt ${filters.discount === "yes" ? "active" : ""}`} onClick={() => handleFilterChange("discount", "yes")}>On Sale</button>
-                         </>
+                          <>
+                            <button className={`mf-opt ${filters.discount === "all" ? "active" : ""}`} onClick={() => handleFilterChange("discount", "all")}>All</button>
+                            <button className={`mf-opt ${filters.discount === "yes" ? "active" : ""}`} onClick={() => handleFilterChange("discount", "yes")}>On Sale</button>
+                          </>
                       )}
                       
                       {openKey === "status" && STATUS_TABS.map(t => (
-                         <button key={t.key} className={`mf-opt ${filters.status === t.key ? "active" : ""}`} onClick={() => handleFilterChange("status", t.key)}>{t.label}</button>
+                          <button key={t.key} className={`mf-opt ${filters.status === t.key ? "active" : ""}`} onClick={() => handleFilterChange("status", t.key)}>{t.label}</button>
                       ))}
 
                       {/* Range Rendering */}
                       {["length", "width", "thickness"].includes(openKey) && (() => {
-                         const mapKey = openKey === "thickness" ? "thick" : openKey
-                         // @ts-ignore
-                         const minKey = `${mapKey}Min`; const maxKey = `${mapKey}Max`
-                         // @ts-ignore
-                         const stats = rangeStats[openKey]; const presets = rangePresets[openKey]
-                         
-                         return (
-                           <div style={{display:'flex', flexDirection:'column', gap:12}}>
+                          const mapKey = openKey === "thickness" ? "thick" : openKey
+                          // @ts-ignore
+                          const minKey = `${mapKey}Min`; const maxKey = `${mapKey}Max`
+                          // @ts-ignore
+                          const stats = rangeStats[openKey]; const presets = rangePresets[openKey]
+                          
+                          return (
+                            <div style={{display:'flex', flexDirection:'column', gap:12}}>
                               <div style={{display:'flex', flexWrap:'wrap', gap:10}}>
                                  {Array.isArray(presets) && presets.map((p: any, idx: number) => (
                                     <button key={idx} className="mf-opt" onClick={() => handleRangeApply(minKey, maxKey, p.min, p.max)}>
@@ -548,16 +537,16 @@ function WoodSlabContent() {
                                  {stats?.min !== undefined && `Data: ${stats.min} – ${stats.max}`}
                               </div>
                            </div>
-                         )
+                          )
                       })()}
 
                       {/* Price Rendering */}
                       {openKey === "price" && (
-                         <div className="mf-range">
-                            <input type="number" placeholder="$" value={filters.priceMin} onChange={e => handleFilterChange("priceMin", e.target.value)} />
-                            <span>–</span>
-                            <input type="number" placeholder="$" value={filters.priceMax} onChange={e => handleFilterChange("priceMax", e.target.value)} />
-                         </div>
+                          <div className="mf-range">
+                             <input type="number" placeholder="$" value={filters.priceMin} onChange={e => handleFilterChange("priceMin", e.target.value)} />
+                             <span>–</span>
+                             <input type="number" placeholder="$" value={filters.priceMax} onChange={e => handleFilterChange("priceMax", e.target.value)} />
+                          </div>
                       )}
 
                     </div>
@@ -585,7 +574,7 @@ function WoodSlabContent() {
                const discountInfo = getProductDiscount(r)
                const imgPath = r.image_url || r.specs?.main_image?.path || r.specs?.main_image?.url
                const img = normalizeImg(imgPath)
-               const st = getEffectiveStatus(r)
+               const st = getEffectiveStatus(r) // ✅ ใช้ status ที่คำนวณจาก stock แล้ว
                const displayName = (r.name && r.name !== "-") ? r.name : "ติดต่อสอบถาม"
 
                return (
@@ -628,7 +617,7 @@ function WoodSlabContent() {
     </div>
   )
 }
-// ✅ ตัวครอบใหม่ (พระเอกของเรา)
+
 export default function WoodSlabPageWrapper() {
   return (
     <Suspense fallback={<div className="p-10 text-center">Loading...</div>}>

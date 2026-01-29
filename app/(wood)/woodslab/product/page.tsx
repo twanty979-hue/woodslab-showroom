@@ -35,10 +35,18 @@ const currency = (n: any) =>
 
 const getSizeText = (specs: any) => {
   if (!specs || typeof specs !== "object") return ""
+  // Support legacy size_raw if present
+  if (specs.size_raw) return specs.size_raw
   return specs.size_text || specs.size || specs.dimension || specs.dimensions || specs.Size || ""
 }
 
 const escClass = (v: string) => String(v || "").toLowerCase().replace(/[^a-z0-9_-]/g, "")
+
+// ✅ Helper ใหม่: เช็คจำนวนสต็อก (เหมือนหน้า Main)
+const getStockQty = (row: any) => {
+  if (!row?.stock || !Array.isArray(row.stock)) return 0;
+  return row.stock.reduce((sum: number, item: any) => sum + (parseFloat(item.qty) || 0), 0);
+}
 
 // --- CONSTANTS ---
 const STATUS_META: any = {
@@ -94,7 +102,6 @@ function ProductContent() {
   // Refs
   const zoomContainerRef = useRef<HTMLDivElement>(null)
   const mainImageRef = useRef<HTMLImageElement>(null)
-  // ตัด Ref ของ Observer ออกเพราะเราจะให้รูปแสดงทันที
   
   // --- Redirect Login ---
   const redirectToLogin = useCallback(() => {
@@ -123,11 +130,10 @@ function ProductContent() {
         setIsLiked(likeData.isLiked)
         setIsLoggedIn((likeData as any).isLoggedIn || false) 
 
-        // Images Logic: อ่านจาก JSON specs.images
+        // Images Logic
         const s = prod.specs || {}
         const main = normalizeImg(prod.image_url) || normalizeImg(s.main_image?.url)
         
-        // เช็คว่า images เป็น Array หรือไม่ และ map ค่าออกมา
         const rawExtras = Array.isArray(s.images) ? s.images : Array.isArray(s.gallery) ? s.gallery : []
         const extras = rawExtras.map((it: any) => typeof it === "string" ? normalizeImg(it) : normalizeImg(it.url || it.path)).filter(Boolean)
         
@@ -170,15 +176,27 @@ function ProductContent() {
     }
   }, [showQR, idParam])
 
-  // ❌ ตัด Intersection Observer ออก เพื่อแก้ปัญหาเรื่องรูปไม่โหลด
-
   // --- Helpers ---
+  // ✅ LOGIC ใหม่: เช็ค stock ก่อน status (Consistency with Main Page)
   const getEffectiveStatus = useCallback((row: any) => {
+    // 1. เช็คสต็อกก่อน (สำคัญที่สุด)
+    const qty = getStockQty(row);
+    if (qty <= 0) return "sold"; // หมด
+
+    // 2. ถ้ามี Legacy pending flag
     if (row?.specs?.pending === true || row?.specs?.pending === "true") return "pending"
+
+    // 3. เช็ค Status
     const st = String(row?.status || "").toLowerCase().trim()
-    if (st === "active") return "available"
+    if (st === "draft") return "draft"
     if (st === "on_request") return "on_request" 
+    
+    // ถ้าสถานะเป็น Reserved/Pending ให้โชว์ Booked แม้จะมีของ
+    if (st === "pending" || st === "reserved" || st === "hold") return "pending"
+    
     if (st === "inactive") return "archived"
+    if (st === "active") return "available"
+    
     return st || "available"
   }, [])
 
@@ -326,20 +344,16 @@ function ProductContent() {
       </div>
     )
   }
-  const normalizeStatus = (raw: string) => {
-    const s = String(raw || "").toLowerCase().trim()
-    if (s === "active") return "available"
-    if (s === "inactive") return "archived"
-    return s
-  }
-
+  
+  // ใช้ Logic เดียวกับหน้าหลักสำหรับการ์ดสินค้าแนะนำ
   const renderRecBadge = (status: string) => {
-    const s = normalizeStatus(status)
+    const s = String(status || "").toLowerCase().trim()
     if (!s || s === "available") return null
+    
     const STATUS_BADGE: Record<string, any> = {
        on_request: { text: "มีคนกำลังสนใจ", style: "pill" }, 
        pending:    { text: "BOOKED", jp: "Reserved", style: "circle" },
-       sold:       { text: "BOOKED", jp: "SOLD OUT", style: "circle" },
+       sold:       { text: "SOLD OUT", jp: "Sold", style: "circle" }, // ✅ ให้เหมือนหน้าหลัก
        reserved:   { text: "RESERVED", style: "pill" },
        archived:   { text: "ARCHIVE", style: "pill" },
        draft:      { text: "DRAFT", style: "pill" },
@@ -494,7 +508,6 @@ function ProductContent() {
         .detail-title { font-size: 1.2rem; font-weight: 700; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 1px; border-bottom: 2px solid #000; display: inline-block; padding-bottom: 5px; }
         .detail-images { display: flex; flex-direction: column; gap: 30px; }
         
-        /* ✅ แก้ตรงนี้ครับ: ลบ animation ออก ให้แสดงทันที */
         .detail-shot { width: 100%; display: block; }
         .detail-shot img { width: 100%; height: auto; border-radius: 8px; display: block; }
 
@@ -699,7 +712,7 @@ function ProductContent() {
                recommendations.map((rec) => {
                  const recImg = normalizeImg(rec.image_url) || normalizeImg(rec.specs?.main_image?.url)
                  const recDiscount = getDiscountInfo(rec)
-                 const effectiveStatus = getEffectiveStatus(rec)
+                 const effectiveStatus = getEffectiveStatus(rec) // ✅ ใช้ status ที่ถูกต้องตาม stock
   
                  return (
                    <a key={rec.id} className="rec-card" href={`/woodslab/product?id=${rec.id}`}>

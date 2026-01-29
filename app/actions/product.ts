@@ -6,7 +6,9 @@ import { cookies } from 'next/headers'
 import { createClient } from '@supabase/supabase-js'
 
 const TABLE = "products"
-const LIST_SELECT = "id,name,sku,barcode,price,image_url,status,specs,updated_at,created_at"
+
+// ⚠️ อันเดิมเก็บไว้ (เผื่อใช้ในฟังก์ชันอื่นที่อยากเห็นของหมด)
+const LIST_SELECT = "id,name,sku,barcode,price,image_url,status,specs,updated_at,created_at,stock(qty)"
 
 // --- Helper Functions ---
 const getPrefix = (category: string) => category === 'rough' ? 'ROUGH-' : 'WOODSLABS'
@@ -62,20 +64,27 @@ export async function getActiveDiscounts() {
   return data || []
 }
 
-// 1.2 ดึงรายการสินค้า (Main Fetch List)
+// 1.2 ✅ แก้ไขเฉพาะฟังก์ชันนี้: กรองสินค้าหมดออกจากรายการหลัก
 export async function getProducts(page: number, limit: number, filters: FilterState, category: 'slabs' | 'rough' = 'slabs') {
   const offset = page * limit
   const skuPrefix = getPrefix(category)
 
+  // 🔥 เปลี่ยน 1: ใช้ !inner เพื่อบังคับว่าต้องมีข้อมูลในตาราง stock
+  const LIST_SELECT_ACTIVE = "id,name,sku,barcode,price,image_url,status,specs,updated_at,created_at,stock!inner(qty)"
+
   let query = supabaseServer
     .from(TABLE)
-    .select(LIST_SELECT)
+    .select(LIST_SELECT_ACTIVE) // ✅ ใช้ตัวแปรใหม่
     .ilike('sku', `${skuPrefix}%`)
+    
+    // 🔥 เปลี่ยน 2: กรองเอาเฉพาะตัวที่ qty > 0 เท่านั้น
+    .gt('stock.qty', 0) 
+
     .range(offset, offset + limit - 1)
     .order('status', { ascending: true })
     .order('updated_at', { ascending: false })
 
-  // --- Apply Filters ---
+  // --- Apply Filters (โลจิกเดิม 100%) ---
   if (filters.type) query = query.eq('specs->>spec_type', filters.type)
   if (filters.material) query = query.eq('specs->>material', filters.material)
   if (filters.panel) query = query.eq('specs->>panel_craft', filters.panel)
@@ -116,7 +125,7 @@ export async function getProducts(page: number, limit: number, filters: FilterSt
   return data || []
 }
 
-// 1.3 ✅ กู้คืน: ดึงค่า Min/Max สำหรับ Slider
+// 1.3 ✅ กู้คืน: ดึงค่า Min/Max สำหรับ Slider (เหมือนเดิม)
 export async function getMinMax(col: string, category: 'slabs' | 'rough' = 'slabs') {
   const skuPrefix = getPrefix(category)
 
@@ -146,7 +155,7 @@ export async function getMinMax(col: string, category: 'slabs' | 'rough' = 'slab
   }
 }
 
-// 1.4 ✅ กู้คืน: ดึงค่าสำหรับ Histogram
+// 1.4 ✅ กู้คืน: ดึงค่าสำหรับ Histogram (เหมือนเดิม)
 export async function getRangeValues(col: string, category: 'slabs' | 'rough' = 'slabs') {
   const skuPrefix = getPrefix(category)
 
@@ -161,7 +170,7 @@ export async function getRangeValues(col: string, category: 'slabs' | 'rough' = 
   return data.map((r: any) => Number(r[col])).filter(n => Number.isFinite(n))
 }
 
-// 1.5 ✅ กู้คืน: ดึงตัวเลือกสำหรับ Dropdown (Type, Material, Panel)
+// 1.5 ✅ กู้คืน: ดึงตัวเลือกสำหรับ Dropdown (Type, Material, Panel) (เหมือนเดิม)
 export async function getDistinctOptions(category: 'slabs' | 'rough' = 'slabs') {
   const skuPrefix = getPrefix(category)
 
@@ -197,10 +206,12 @@ export async function getDistinctOptions(category: 'slabs' | 'rough' = 'slabs') 
 
 export async function getProductDetail(id?: string) {
   if (!id) return null
-  const { data } = await supabaseServer.from(TABLE).select('*').eq('id', id).single()
+  // ⚠️ หน้ารายละเอียดคงไว้แบบเดิม (Left Join) เพื่อให้ยังเข้าดูของที่หมดแล้วได้ (แต่จะขึ้น Sold Out)
+  const { data } = await supabaseServer.from(TABLE).select('*, stock(qty)').eq('id', id).single()
   return data
 }
 
+// ✅ แก้ไข Recommend: ไม่แนะนำสินค้าที่หมด
 export async function getRecommendProducts(currentId: number | string, specs: any) {
   const type = specs?.spec_type || ""
   const material = specs?.material || ""
@@ -209,13 +220,15 @@ export async function getRecommendProducts(currentId: number | string, specs: an
   const isRough = specs?.type === 'rough' || (specs?.sku && specs.sku.startsWith('ROUGH-'))
   const prefix = isRough ? 'ROUGH-' : 'WOODSLABS'
 
-  const selectCols = "id,name,sku,price,image_url,status,specs,updated_at"
+  // 🔥 เปลี่ยน: ใช้ !inner และกรอง qty > 0
+  const selectCols = "id,name,sku,price,image_url,status,specs,updated_at,stock!inner(qty)"
 
   // 1. Specific Query
   let q1 = supabaseServer
     .from(TABLE)
     .select(selectCols)
     .ilike("sku", `${prefix}%`)
+    .gt('stock.qty', 0) // ✅ กรองของหมดออก
     .order("updated_at", { ascending: false })
     .neq("id", currentId)
     .limit(8)
@@ -232,6 +245,7 @@ export async function getRecommendProducts(currentId: number | string, specs: an
     .from(TABLE)
     .select(selectCols)
     .ilike("sku", `${prefix}%`)
+    .gt('stock.qty', 0) // ✅ กรองของหมดออก
     .order("updated_at", { ascending: false })
     .neq("id", currentId)
     .limit(8)
@@ -310,7 +324,8 @@ export async function getMyFavorites() {
 
   const { data, error } = await authClient
     .from('favorites')
-    .select(`product_id, products (id, name, sku, price, image_url, specs, status)`)
+    // ✅ Favorites: ปล่อยให้เห็นของหมดได้ (จะได้รู้ว่าสินค้าที่ชอบหมดแล้ว)
+    .select(`product_id, products (id, name, sku, price, image_url, specs, status, stock(qty))`)
     .eq('user_id', user.id)
     .order('created_at', { ascending: false })
 
