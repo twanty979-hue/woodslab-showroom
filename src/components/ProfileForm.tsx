@@ -1,15 +1,16 @@
 'use client'
 
-import React, { useActionState, useState, useRef, useEffect } from 'react'
+import React, { useActionState, useState, useRef, useEffect, startTransition } from 'react'
 import { useFormStatus } from 'react-dom'
 import { updateProfile } from '@/app/actions/profile'
+import imageCompression from 'browser-image-compression' // ✅ อย่าลืม npm install browser-image-compression
 
 // --- Helper: แปลง Path เป็น Full URL ---
 const getImageUrl = (path: string | null) => {
   if (!path) return null;
   if (path.startsWith('http') || path.startsWith('https') || path.startsWith('blob:')) return path;
   
-  const baseUrl = "https://zexflchjcycxrpjkuews.supabase.co/storage/v1/object/public/customers";
+  const baseUrl = "https://zexflchjcycxrpjkuews.supabase.co/storage/v1/object/public/customers"; // ⚠️ เช็ค URL ให้ตรงกับของพี่นะ
   const cleanPath = path.replace(/^\/+/, "");
   return `${baseUrl}/${cleanPath}`;
 }
@@ -21,19 +22,23 @@ const IconCamera = ({ className }: { className?: string }) => (
   </svg>
 )
 
-// ปุ่ม Submit สไตล์ Minimalist Hover
-function SubmitButton() {
+// ปุ่ม Submit สไตล์ Minimalist Hover (รับ prop isCompressing เพิ่ม)
+function SubmitButton({ isCompressing }: { isCompressing: boolean }) {
   const { pending } = useFormStatus()
+  
+  // สถานะทำงานคือ: กำลังบีบอัด (Client) หรือ กำลังส่งข้อมูล (Server)
+  const isBusy = pending || isCompressing
+
   return (
     <button 
       type="submit" 
-      disabled={pending}
+      disabled={isBusy}
       suppressHydrationWarning
-      className="group relative inline-block w-full py-5 border border-zinc-200 text-zinc-800 uppercase tracking-[0.3em] text-[10px] font-bold transition-all duration-500 overflow-hidden mt-10"
+      className="group relative inline-block w-full py-5 border border-zinc-200 text-zinc-800 uppercase tracking-[0.3em] text-[10px] font-bold transition-all duration-500 overflow-hidden mt-10 disabled:opacity-70 disabled:cursor-not-allowed"
     >
-      <span className={`absolute inset-0 bg-[#d4a373] transition-all duration-500 ease-out ${pending ? 'w-full' : 'w-0 group-hover:w-full'}`}></span>
-      <span className={`relative z-10 transition-colors duration-500 ${pending ? 'text-white' : 'group-hover:text-white'}`}>
-        {pending ? 'Saving Details...' : 'Save Profile Changes'}
+      <span className={`absolute inset-0 bg-[#d4a373] transition-all duration-500 ease-out ${isBusy ? 'w-full' : 'w-0 group-hover:w-full'}`}></span>
+      <span className={`relative z-10 transition-colors duration-500 ${isBusy ? 'text-white' : 'group-hover:text-white'}`}>
+        {isCompressing ? 'Compressing Image...' : pending ? 'Saving Details...' : 'Save Profile Changes'}
       </span>
     </button>
   )
@@ -42,10 +47,10 @@ function SubmitButton() {
 export default function ProfileForm({ customer }: { customer: any }) {
   const [state, formAction] = useActionState(updateProfile, null)
   const [previewUrl, setPreviewUrl] = useState<string | null>(null)
+  const [isCompressing, setIsCompressing] = useState(false) // ✅ State สำหรับ WebP
   const fileInputRef = useRef<HTMLInputElement>(null)
 
   const displayImage = previewUrl || getImageUrl(customer?.avatar_url)
-  // Logic Versioning ป้องกัน Cache รูปเก่า
   const imageVersion = customer?.updated_at ? new Date(customer.updated_at).getTime() : '1';
 
   useEffect(() => {
@@ -68,8 +73,47 @@ export default function ProfileForm({ customer }: { customer: any }) {
     fileInputRef.current?.click()
   }
 
+  // ✅ ฟังก์ชันดักจับ Submit เพื่อบีบอัดรูป
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+    setIsCompressing(true) // เริ่มโหลด
+
+    const formData = new FormData(event.currentTarget)
+    const file = formData.get('avatar') as File
+
+    // ถ้ามีไฟล์รูป ให้บีบอัด
+    if (file && file.size > 0) {
+      try {
+        const options = {
+          maxSizeMB: 0.5,         // ไม่เกิน 0.5MB
+          maxWidthOrHeight: 800,  // ไม่เกิน 800px
+          useWebWorker: true,
+          fileType: 'image/webp'  // แปลงเป็น WebP
+        }
+        
+        const compressedFile = await imageCompression(file, options)
+        
+        // สร้างไฟล์ใหม่ใส่กลับเข้าไป
+        const newFileName = "avatar.webp"
+        const finalFile = new File([compressedFile], newFileName, { type: 'image/webp' })
+        formData.set('avatar', finalFile)
+        
+      } catch (error) {
+        console.error("Compression failed:", error)
+      }
+    }
+
+    setIsCompressing(false) // จบบีบอัด
+
+    // ส่งต่อให้ Server Action
+    startTransition(() => {
+      formAction(formData)
+    })
+  }
+
   return (
-    <form action={formAction} className="w-full">
+    // ✅ เปลี่ยนจาก action={formAction} เป็น onSubmit={handleSubmit}
+    <form onSubmit={handleSubmit} className="w-full">
       
       {/* ส่วนรูปภาพ Avatar */}
       <div className="flex justify-center mb-16">
@@ -167,7 +211,8 @@ export default function ProfileForm({ customer }: { customer: any }) {
         </div>
       </div>
 
-      <SubmitButton />
+      {/* ปุ่มกด (ส่งสถานะ isCompressing เข้าไปด้วย) */}
+      <SubmitButton isCompressing={isCompressing} />
     </form>
   )
 }
