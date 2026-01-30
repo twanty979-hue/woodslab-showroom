@@ -4,12 +4,23 @@ const nextConfig: NextConfig = {
   /* config options here */
 
   // เก็บอันนี้ไว้ถ้าอยากข้าม Error ภาษา (TypeScript)
-  // แต่ถ้าอยากให้ตรวจภาษาด้วย ก็ลบก้อนนี้ออกได้เลยครับ
   typescript: {
     ignoreBuildErrors: true, 
   },
 
-  // ❌ ลบก้อน eslint ออกไปเลยครับ (ห้ามใส่)
+  // ✅ เพิ่มส่วนนี้เข้าไปเพื่อแก้ปัญหาโหลดรูปไม่ขึ้น
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'image.ixiumu.cn', // อนุญาตโดเมนรูปไม้ (ixiumu)
+      },
+      {
+        protocol: 'https',
+        hostname: 'zexflchjcycxrpjkuews.supabase.co', // อนุญาตโดเมน Supabase (เผื่อไว้)
+      },
+    ],
+  },
 };
 
 export default nextConfig;

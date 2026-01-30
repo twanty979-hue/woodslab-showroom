@@ -31,9 +31,9 @@ const FadeInSection = ({ children, className }: { children: React.ReactNode, cla
 export default function AboutPage() {
   // --- Slideshow Logic ---
   const heroImages = [
-    "https://i.pinimg.com/1200x/49/1c/63/491c6398d55fbfbcaea1f72c28476fbb.jpg",
-    "https://i.pinimg.com/736x/d0/00/db/d000dbd3b5ba2ef378a758bf3616a69f.jpg",
-    "https://i.pinimg.com/1200x/62/47/fa/6247fa479cb8f3687125c5516e59daed.jpg"
+    "https://zexflchjcycxrpjkuews.supabase.co/storage/v1/object/public/site-assets/general/6c98dc1d2d3b7c9eddacf5fe92babfba-2iejp.webp",
+    "https://zexflchjcycxrpjkuews.supabase.co/storage/v1/object/public/site-assets/general/e47c32733850868aad93439974aed22b-yv471.webp",
+    "https://zexflchjcycxrpjkuews.supabase.co/storage/v1/object/public/site-assets/general/497e57f88cb042c03a1046c5d45f4ba8-qio4c.webp"
   ];
 
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -50,28 +50,28 @@ export default function AboutPage() {
       subtitle: "The Journey",
       title: "Finding The Perfect Slab",
       desc: "To fully bring out the unique character of each tree and create warm, enduring slab furniture, WOODSLABS meticulously searches for and selects the most suitable wood. We scour the world’s top forests and timber suppliers, hoping to find century-old rare logs perfect for crafting large slabs. With sincerity and patience, we carefully select from countless logs of varying shapes and forms, all to find the perfect piece of wood and to discover the ideal slab for every user’s heart.",
-      img: "https://image.ixiumu.cn/front/brand/images/about_1_new.png",
+      img: "https://zexflchjcycxrpjkuews.supabase.co/storage/v1/object/public/site-assets/general/f4a9d3deddf60708f7b73e7c9a83c232-8hlxt.webp",
       reverse: false,
     },
     {
       subtitle: "Philosophy",
       title: "Natural Living",
       desc: "Starting with the essence of trees, their greatest attribute is their natural origin. Trees grow naturally over long periods of time, and we aim to preserve this rare and precious sense of nature. We do not disrupt the natural shapes, textures, or marks inherent in the wood. Instead, we infuse it with the natural-inspired design language of our craftsmen, creating refreshingly natural slab furniture. This builds a harmonious space between people and nature.",
-      img: "https://image.ixiumu.cn/front/brand/images/about_2_new.png",
+      img: "https://zexflchjcycxrpjkuews.supabase.co/storage/v1/object/public/site-assets/general/b381ef28050b0018721a2f8a8026481e-bwc1h.webp",
       reverse: true,
     },
     {
       subtitle: "Craftsmanship",
       title: "Unique Design Language",
       desc: "We aim to provide users with a unique experience. From a one-of-a-kind log to a singular slab, whether in shape, texture, color, natural edge, or scent, each piece carries its own distinct personality, never identical. Our experienced craftsmen dedicate themselves day and night, preserving the tree’s natural attributes while integrating the most fitting personalized design for each slab.",
-      img: "https://image.ixiumu.cn/front/brand/images/about_3_new.png",
+      img: "https://zexflchjcycxrpjkuews.supabase.co/storage/v1/object/public/site-assets/general/f8c38e3530503bfea0ed996556190b1b-grkb2.webp",
       reverse: false,
     },
     {
       subtitle: "Legacy",
       title: "Passing It On",
       desc: "If the memory of a single slab had weight, it would undoubtedly be heavy. It travels through endless time to reach everyday life, carrying the grand journey of a century-old tree. Every fleeting memory transforms into the marks of growth rings, then becomes a slab, entering people’s lives. A family dining together at the table, a child doing homework at the desk, a leisurely afternoon tea... All life scenes quietly unfold on a single slab.",
-      img: "https://image.ixiumu.cn/front/brand/images/about_4_new.png",
+      img: "https://zexflchjcycxrpjkuews.supabase.co/storage/v1/object/public/site-assets/general/fabad5b938cce52b88d5345aa768ecfb-nabga.webp",
       reverse: true,
     }
   ];

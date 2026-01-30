@@ -31,9 +31,9 @@ const FadeInSection = ({ children, className }: { children: React.ReactNode, cla
 export default function FranchiseePage() {
   // --- Slideshow Logic ---
   const heroImages = [
-    "https://i.pinimg.com/1200x/2e/d5/9f/2ed59f053fac27bfe0496a256a604de9.jpg",
-    "https://i.pinimg.com/736x/ad/53/d8/ad53d800cb11d47129d52910331bb41e.jpg",
-    "https://i.pinimg.com/736x/ed/dd/e5/eddde5a73d81e3450b8d816d7d0025de.jpg"
+    "https://zexflchjcycxrpjkuews.supabase.co/storage/v1/object/public/site-assets/general/fabad5b938cce52b88d5345aa768ecfb-nabga.webp",
+    "https://zexflchjcycxrpjkuews.supabase.co/storage/v1/object/public/site-assets/general/d7d74b86ce37455e1096f2b226ed3afe-wtlxd.webp",
+    "https://zexflchjcycxrpjkuews.supabase.co/storage/v1/object/public/site-assets/general/9bafb334fd20b209ade54f7ee75b489a-zd554.webp"
   ];
 
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -49,37 +49,37 @@ export default function FranchiseePage() {
     {
       title: "Material Selection",
       desc: "We boast a high-quality procurement team that regularly visits sustainable forests worldwide for professional material selection. We prioritize century-old trees with minimal heartwood cracking and unique natural shapes. We use world-class wood to create world-class slabs.",
-      img: "https://image.ixiumu.cn/front/brand/images/join/join_shop_1.png",
+      img: "https://zexflchjcycxrpjkuews.supabase.co/storage/v1/object/public/site-assets/general/f473ea3dcaf601f3c6ee4b6b75e505b0-l896u.webp",
       reverse: false
     },
     {
       title: "Design Philosophy",
       desc: "Our design team deeply understands the characteristics and beauty of wood. While preserving natural traits, we incorporate modern furniture design concepts, creating 14 creative edge styles and 17 inspired surface designs. Users can freely choose and customize.",
-      img: "https://image.ixiumu.cn/front/brand/images/join/join_shop_2.png",
+      img: "https://zexflchjcycxrpjkuews.supabase.co/storage/v1/object/public/site-assets/general/68472cc7da4659be15da224c8a898827-7v52j.webp",
       reverse: true
     },
     {
       title: "Master Craftsmanship",
       desc: "Equipped with a professional technical team, we specialize in solid wood slab craftsmanship. We ensure that our processes do not compromise the wood's inherent stability while creating 18 surface colors and 9 surface textures.",
-      img: "https://image.ixiumu.cn/front/brand/images/join/join_shop_3.png",
+      img: "https://zexflchjcycxrpjkuews.supabase.co/storage/v1/object/public/site-assets/general/5d3bdeb73b39b3dd05fd75c9e80711e9-qqox1.webp",
       reverse: false
     },
     {
       title: "Advanced Technology",
       desc: "Supported by globally leading technology, we utilize imported Japanese high-frequency drying equipment and large-scale wood leveling machines. Our woodworking team with 15 years of experience safeguards every step of production.",
-      img: "https://image.ixiumu.cn/front/brand/images/join/join_shop_4.png",
+      img: "https://zexflchjcycxrpjkuews.supabase.co/storage/v1/object/public/site-assets/general/a8bceb7a237a54537e38cc24da55a6c4-ie2cd.webp",
       reverse: true
     },
     {
       title: "Eco-Responsibility",
       desc: "As advocates of proactive ecology, we meticulously control every detail of environmental sustainability, from raw wood selection and resin materials to adhesives and surface coatings. We ensure safety, eco-friendliness, and durability.",
-      img: "https://image.ixiumu.cn/front/brand/images/join/join_shop_5.png",
+      img: "https://zexflchjcycxrpjkuews.supabase.co/storage/v1/object/public/site-assets/general/e9baa1b8ae605818af42473d388bf0eb-xwcek.webp",
       reverse: false
     },
     {
       title: "Exclusive Collection",
       desc: "With a collection of over 10,000 air-dried slabs and 1,500+ premium slabs in stock, we offer more than 40 rare wood species from Europe, North America, South America, Africa, and Southeast Asia.",
-      img: "https://image.ixiumu.cn/front/brand/images/join/join_shop_6.png",
+      img: "https://zexflchjcycxrpjkuews.supabase.co/storage/v1/object/public/site-assets/general/8ddac0c25fa633cb6bbdfcb4a031254c-0arvm.webp",
       reverse: true
     }
   ];
@@ -191,7 +191,7 @@ export default function FranchiseePage() {
       </section>
 
       {/* 4. Investment & Growth */}
-      <section className="relative py-40 px-6 bg-fixed bg-cover bg-center" style={{ backgroundImage: 'url("https://image.ixiumu.cn/front/brand/images/join/join_shop_7.png")' }}>
+      <section className="relative py-40 px-6 bg-fixed bg-cover bg-center" style={{ backgroundImage: 'url("https://zexflchjcycxrpjkuews.supabase.co/storage/v1/object/public/site-assets/general/joinshop7-l6un4.webp")' }}>
          <div className="absolute inset-0 bg-black/70"></div>
          <div className="relative z-10 max-w-4xl mx-auto text-center text-white">
             <FadeInSection>

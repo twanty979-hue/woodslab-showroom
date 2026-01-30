@@ -1,5 +1,5 @@
 "use client";
-
+import Image from 'next/image'; // อย่าลืม import บรรทัดบนสุด
 import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 
@@ -51,9 +51,9 @@ export default function HomePage() {
   
   // ✅ 1. ตั้งค่ารูปภาพสำหรับ Hero Slideshow (เพิ่มกี่รูปก็ได้ที่นี่)
   const heroImages = [
-    "/wood_slabs_photo/1223356.png",
-    "/wood_slabs_photo/f75fe6ff-6_6852141935588899.jpg",
-    "/wood_slabs_photo/lumina-studio-1767681001953.png"
+    "https://zexflchjcycxrpjkuews.supabase.co/storage/v1/object/public/site-assets/general/1-3-qg624.webp",
+    "https://zexflchjcycxrpjkuews.supabase.co/storage/v1/object/public/site-assets/general/2-3-5xqg6.webp",
+    "https://zexflchjcycxrpjkuews.supabase.co/storage/v1/object/public/site-assets/general/3-3-r1ah5.webp"
   ];
 
   // ✅ 2. State สำหรับจัดการเปลี่ยนรูป
@@ -70,18 +70,18 @@ export default function HomePage() {
 
   // ข้อมูลไม้ (Solid Wood)
   const solidWoods = [
-    { name: "Black Walnut", img: "https://image.ixiumu.cn/images/en/index_1.png" },
-    { name: "Burmese Teak", img: "https://image.ixiumu.cn/images/en/index_3.png" },
-    { name: "South American Raintree", img: "https://image.ixiumu.cn/images/en/index_4.png" },
-    { name: "American Ash", img: "https://image.ixiumu.cn/images/en/index_6.png" },
+    { name: "Black Walnut", img: "https://zexflchjcycxrpjkuews.supabase.co/storage/v1/object/public/site-assets/general/491c6398d55fbfbcaea1f72c28476fbb-3ukku.webp" },
+    { name: "Burmese Teak", img: "https://zexflchjcycxrpjkuews.supabase.co/storage/v1/object/public/site-assets/general/a3d4bfc856cf303b14325e1d8074fbf3-9101m.webp" },
+    { name: "South American Raintree", img: "https://zexflchjcycxrpjkuews.supabase.co/storage/v1/object/public/site-assets/general/b99d4e350480cdc031dfcbcb9866c188-176sz.webp" },
+    { name: "American Ash", img: "https://zexflchjcycxrpjkuews.supabase.co/storage/v1/object/public/site-assets/general/180d7002813e1c732a87a3e678fc1e1f-fp15y.webp" },
   ];
 
   // ข้อมูลไม้ (Epoxy)
   const epoxyWoods = [
-    { name: "Walnut Resin", img: "https://image.ixiumu.cn/images/en/index_13.png" },
-    { name: "Poplar Resin", img: "https://image.ixiumu.cn/images/en/index_14.png" },
-    { name: "Olive Wood", img: "https://image.ixiumu.cn/images/en/index_15.png" },
-    { name: "African Rosewood", img: "https://image.ixiumu.cn/images/en/index_20.png" },
+    { name: "Walnut Resin", img: "https://zexflchjcycxrpjkuews.supabase.co/storage/v1/object/public/site-assets/general/a2a248889bd78d57262edc22926e8236-iu5vg.webp" },
+    { name: "Poplar Resin", img: "https://zexflchjcycxrpjkuews.supabase.co/storage/v1/object/public/site-assets/general/13cbc3a3a7d1cab267022445162370d1-6x28m.webp" },
+    { name: "Olive Wood", img: "https://zexflchjcycxrpjkuews.supabase.co/storage/v1/object/public/site-assets/general/d3a004efbaee6bf0009d0dece87fe104-7jho5.webp" },
+    { name: "African Rosewood", img: "https://zexflchjcycxrpjkuews.supabase.co/storage/v1/object/public/site-assets/general/cb1f17b6497222e875f2108d91d0179b-yo44s.webp" },
   ];
 
   return (
@@ -122,7 +122,7 @@ export default function HomePage() {
             <div className="w-full md:w-1/2 relative">
                <div className="aspect-[4/5] overflow-hidden relative">
                   <img 
-                    src="https://i.pinimg.com/736x/cf/eb/ff/cfebff29e2180cafa2a14f48964677ff.jpg" 
+                    src="https://zexflchjcycxrpjkuews.supabase.co/storage/v1/object/public/site-assets/general/cfebff29e2180cafa2a14f48964677ff-7w9xh.webp" 
                     alt="About Us" 
                     className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-1000 ease-out" 
                   />
@@ -153,7 +153,7 @@ export default function HomePage() {
          </div>
       </section>
 
-      {/* 3. The Collections (Dual Showcase) */}
+{/* 3. The Collections (Dual Showcase) */}
       <section className="bg-white py-32 border-t border-zinc-100">
          <div className="max-w-8xl mx-auto px-6">
             <div className="text-center mb-24">
@@ -170,9 +170,16 @@ export default function HomePage() {
                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-2">
                   {solidWoods.map((wood, idx) => (
                      <Link href="/woodslab" key={idx} className="group relative aspect-[3/4] overflow-hidden bg-zinc-100 block">
-                        <img src={wood.img} alt={wood.name} className="w-full h-full object-cover transition-transform duration-[1.5s] group-hover:scale-110 mix-blend-multiply" />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                        <div className="absolute bottom-6 left-6 text-white transform translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
+                        {/* ✅ แก้ไขจุดที่ 1: ใช้ Image component */}
+                        <Image 
+                           src={wood.img} 
+                           alt={wood.name}
+                           fill
+                           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+                           className="object-cover transition-transform duration-[1.5s] group-hover:scale-110 mix-blend-multiply"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10"></div>
+                        <div className="absolute bottom-6 left-6 text-white transform translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500 z-20">
                            <span className="text-[10px] uppercase tracking-widest block mb-1">Material</span>
                            <span className="text-xl font-serif italic">{wood.name}</span>
                         </div>
@@ -190,9 +197,16 @@ export default function HomePage() {
                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-2">
                   {epoxyWoods.map((wood, idx) => (
                      <Link href="/woodslab" key={idx} className="group relative aspect-[3/4] overflow-hidden bg-zinc-100 block">
-                        <img src={wood.img} alt={wood.name} className="w-full h-full object-cover transition-transform duration-[1.5s] group-hover:scale-110" />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                        <div className="absolute bottom-6 left-6 text-white transform translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
+                        {/* ✅ แก้ไขจุดที่ 2: ใช้ Image component */}
+                        <Image 
+                           src={wood.img} 
+                           alt={wood.name}
+                           fill
+                           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+                           className="object-cover transition-transform duration-[1.5s] group-hover:scale-110"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10"></div>
+                        <div className="absolute bottom-6 left-6 text-white transform translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500 z-20">
                            <span className="text-[10px] uppercase tracking-widest block mb-1">Series</span>
                            <span className="text-xl font-serif italic">{wood.name}</span>
                         </div>
@@ -204,7 +218,7 @@ export default function HomePage() {
       </section>
 
       {/* 4. Custom Projects (Parallax) */}
-      <section className="relative py-48 px-6 bg-fixed bg-cover bg-center" style={{ backgroundImage: 'url("https://image.ixiumu.cn/images/en/icon_en_index_banner_2.png")' }}>
+      <section className="relative py-48 px-6 bg-fixed bg-cover bg-center" style={{ backgroundImage: 'url("https://zexflchjcycxrpjkuews.supabase.co/storage/v1/object/public/site-assets/general/iconenindexbanner2-xxfwt.webp")' }}>
          <div className="absolute inset-0 bg-black/50"></div>
          <div className="relative z-10 max-w-4xl mx-auto text-center text-white">
             <FadeInSection>
@@ -215,7 +229,7 @@ export default function HomePage() {
                   Application Scenarios <br/> <span className="italic text-[#d4a373]">From Clients</span>
                </h2>
                <div className="mt-12">
-                  <LinkButton href="/case" text="View Custom Projects" dark />
+                  <LinkButton href="/woodslab" text="View Custom Projects" dark />
                </div>
             </FadeInSection>
          </div>
@@ -262,7 +276,7 @@ export default function HomePage() {
             </div>
             <div className="w-full md:w-1/2 h-[400px] relative overflow-hidden group">
                <img 
-                 src="https://image.ixiumu.cn/images/en/icon_en_index_banner_3.png" 
+                 src="https://zexflchjcycxrpjkuews.supabase.co/storage/v1/object/public/site-assets/general/iconenindexbanner3-kq46o.webp" 
                  alt="Showroom" 
                  className="w-full h-full object-cover transition-transform duration-[1.5s] group-hover:scale-110 opacity-70 group-hover:opacity-100" 
                />
