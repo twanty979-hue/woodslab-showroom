@@ -684,6 +684,15 @@ const maxStock = getStockQty(product)
   </span>
 </div>
   
+            <div className="actions">
+              <button className="btn btn-primary" onClick={handleAddToCart} disabled={!meta.canBuy || processing}>
+                {processing ? "Processing..." : "Add to Cart"}
+              </button>
+              <button className="btn" onClick={handleDeposit} disabled={!meta.canBuy || processing}>
+                Book / Deposit (100฿)
+              </button>
+            </div>
+  
             <div className="status-msg">
               {statusMsg ? (
                  <span style={{color: statusMsg.color}}>{statusMsg.text}</span>
