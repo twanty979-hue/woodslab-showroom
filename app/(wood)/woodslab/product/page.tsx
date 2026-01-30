@@ -381,7 +381,7 @@ function ProductContent() {
   const meta = getStatusMeta(product)
   const discountInfo = getDiscountInfo(product)
   const specList = getSpecRows()
-
+const maxStock = getStockQty(product)
   return (
     <>
       <style jsx global>{`
@@ -656,22 +656,33 @@ function ProductContent() {
             </div>
   
             <div className="qty-row">
-              <div className="qty-control">
-                <button className="qty-btn" onClick={() => setQty(Math.max(1, qty - 1))} disabled={!meta.canBuy}> − </button>
-                <input className="qty-input" value={qty} readOnly />
-                <button className="qty-btn" onClick={() => setQty(Math.min(99, qty + 1))} disabled={!meta.canBuy}> + </button>
-              </div>
-              <span style={{fontSize:'0.9rem', color:'var(--text-muted)'}}>Unit(s)</span>
-            </div>
+  <div className="qty-control">
+    {/* ปุ่มลบ: ถ้า qty <= 1 ให้ disable ปุ่มไปเลย */}
+    <button 
+      className="qty-btn" 
+      onClick={() => setQty(Math.max(1, qty - 1))} 
+      disabled={!meta.canBuy || qty <= 1}
+    > 
+      − 
+    </button>
+
+    <input className="qty-input" value={qty} readOnly />
+
+    {/* ปุ่มบวก: เปลี่ยนจาก 99 เป็น maxStock และ disable เมื่อ qty ถึง maxStock */}
+    <button 
+      className="qty-btn" 
+      onClick={() => setQty(Math.min(maxStock, qty + 1))} 
+      disabled={!meta.canBuy || qty >= maxStock}
+    > 
+      + 
+    </button>
+  </div>
   
-            <div className="actions">
-              <button className="btn btn-primary" onClick={handleAddToCart} disabled={!meta.canBuy || processing}>
-                {processing ? "Processing..." : "Add to Cart"}
-              </button>
-              <button className="btn" onClick={handleDeposit} disabled={!meta.canBuy || processing}>
-                Book / Deposit (100฿)
-              </button>
-            </div>
+  {/* (Optional) แสดงจำนวนสต็อกให้ลูกค้าเห็นด้วยก็ได้ */}
+  <span style={{fontSize:'0.9rem', color:'var(--text-muted)'}}>
+     Unit(s) {maxStock > 0 && <span style={{fontSize:'0.8em'}}> (Available: {maxStock})</span>}
+  </span>
+</div>
   
             <div className="status-msg">
               {statusMsg ? (
