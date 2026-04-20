@@ -168,15 +168,16 @@ export default function Navbar() {
           
           {/* 1. LOGO (ชิดซ้าย) */}
           <div className="flex justify-start">
-             <Link href="/" className="flex items-center gap-3 cursor-pointer z-[1001] relative group">
+             <Link href="/" className="flex items-center cursor-pointer z-[1001] relative group">
+                
+                {/* ✅ ยายปรับ h (ความสูง) ให้ใหญ่ขึ้นเป็น 14 ถึง 20 
+                    และใส่ origin-left (ขยายจากฝั่งซ้าย) + scale-125 (ขยายอีก 25%) จ้ะ */}
                 <img 
-                  src="/wood_slabs_photo/icon.png" 
-                  alt="Woodslabs Logo" 
-                  className={`object-contain ${commonTransition} ${useWhiteText ? 'h-10 md:h-12 brightness-0 invert' : 'h-7 md:h-9'}`}
+                  src="/wood_slabs_photo/Artboard 1 copy 2.png"
+                  alt="ZENSLAB Logo" 
+                  className={`object-contain w-auto h-14 md:h-16 lg:h-20 origin-left transform md:scale-125 ${commonTransition} ${useWhiteText ? 'brightness-0 invert' : ''}`}
                 />
-                <span className={`font-sans font-medium uppercase tracking-[0.2em] text-xl md:text-2xl ${commonTransition} ${mainTextColor} whitespace-nowrap`}>
-  ZENSLABS
-</span>
+                
              </Link>
           </div>
           

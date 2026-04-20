@@ -1,13 +1,22 @@
-/* ── Google Fonts: Playfair Display + Sarabun (Thai) ── */
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Sarabun:wght@300;400;500;600;700&display=swap');
+/* ── Google Fonts: Playfair Display (English) ── */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&display=swap');
 
 @import "tailwindcss";
+
+@font-face {
+  font-family: 'DBHeavent';
+  src: url('/fonts/DB Heavent Cond v3.2.1.ttf') format('truetype');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0E00-U+0E7F; /* ภาษาไทยเท่านั้น */
+}
 
 :root {
   --background: #ffffff;
   --foreground: #171717;
-  /* Playfair Display = English, Sarabun = Thai */
-  --font-main: 'Playfair Display', 'Sarabun', sans-serif;
+  /* Playfair Display = English, DB Heavent = Thai */
+  --font-main: 'Playfair Display', 'DBHeavent', sans-serif;
 }
 
 @theme inline {
