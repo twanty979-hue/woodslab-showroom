@@ -1,14 +1,20 @@
+/* ── Google Fonts: Playfair Display + Sarabun (Thai) ── */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Sarabun:wght@300;400;500;600;700&display=swap');
+
 @import "tailwindcss";
 
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  /* Playfair Display = English, Sarabun = Thai */
+  --font-main: 'Playfair Display', 'Sarabun', sans-serif;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
+  --font-sans: var(--font-main);
+  --font-serif: var(--font-main);
   --font-mono: var(--font-geist-mono);
 }
 
@@ -22,10 +28,10 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-main);
 }
 
-/* Animation สำหรับไอคอนตะกร้า */
+/* Animation สำหรับไอคอนตะกร้า (อันเดิมของหลานจ้ะ) */
 @keyframes bump {
   0% { transform: scale(1); }
   25% { transform: scale(1.2); }

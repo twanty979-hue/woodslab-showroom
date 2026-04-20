@@ -1,6 +1,6 @@
 // config.ts
 
-export const LIMIT = 12;
+export const LIMIT = 40;
 
 export const SPEC_KEYS = {
   type: "spec_type",
@@ -33,12 +33,11 @@ export const PRODUCT_TYPES = [
 ];
 
 export const HEADERS = [
-  { key: "type", label: "Type" },
   { key: "material", label: "Material" },
   { key: "panel", label: "Panel Craft" },
-  { key: "length", label: "Length (cm)" },
-  { key: "width", label: "Width (cm)" },
-  { key: "thickness", label: "Thickness (cm)" },
+  { key: "length", label: "Length (mm)" },
+  { key: "width", label: "Width (mm)" },
+  { key: "thickness", label: "Thickness (mm)" },
   { key: "price", label: "Price" },
   { key: "discount", label: "Deals" },
   { key: "status", label: "State" },

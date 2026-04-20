@@ -21,7 +21,7 @@ const FadeIn = ({ children, className = '', delay = 0 }: { children: React.React
 };
 
 const Tag = ({ text }: { text: string }) => (
-  <p className="text-[#C8935A] text-[9px] font-bold uppercase tracking-[0.5em] mb-5">{text}</p>
+  <p className="text-[#C8935A] text-[11px] font-bold uppercase tracking-[0.4em] mb-5">{text}</p>
 );
 
 const Divider = () => <div className="w-12 h-[1px] bg-[#C8935A] my-10 opacity-60" />;
@@ -108,8 +108,8 @@ export default function AboutPage() {
 
         <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-6">
           <FadeIn>
-            <p className="text-[#C8935A] text-[9px] uppercase tracking-[0.6em] mb-6 font-medium">BY WOODDEN™ — Since 2016</p>
-            <p className="text-white/60 text-xs md:text-sm uppercase tracking-[0.4em] font-light">
+            <p className="text-[#C8935A] text-[11px] uppercase tracking-[0.5em] mb-6 font-medium">BY WOODDEN™ — Since 2016</p>
+            <p className="text-white/70 text-sm md:text-base uppercase tracking-[0.3em] font-light">
               Our Story — Crafting Nature's Legacy
             </p>
           </FadeIn>
@@ -137,15 +137,15 @@ export default function AboutPage() {
           <h2 className="font-serif text-[#1C1917] leading-snug mb-8"
             style={{ fontSize: 'clamp(1.6rem, 3.5vw, 3.5rem)' }}>
             "เฟอร์นิเจอร์ที่อยู่เคียงข้างทุกช่วงเวลา<br className="hidden md:block" />
-            <span className="italic text-zinc-400 font-light"> มอบความอบอุ่นในทุกสายสัมพันธ์"</span>
+            <span className="text-zinc-400 font-light"> มอบความอบอุ่นในทุกสายสัมพันธ์"</span>
           </h2>
-          <p className="text-zinc-500 font-light leading-loose text-sm md:text-lg max-w-2xl mx-auto">
+          <p className="text-zinc-700 leading-loose text-sm md:text-lg max-w-2xl mx-auto">
             อายุการใช้งานของไม้แผ่นหนึ่งไม้ — เราไม่อาจคำนวณหรือกำหนดได้อย่างแน่ชัด
             การสร้างโต๊ะไม้แผ่นเดียวที่ลูกค้าสามารถใช้งานได้ตลอดไปคือเป้าหมายที่ X Wood มุ่งมั่นเสมอมา
             เราหวังว่าไม้แผ่นของเราจะสามารถส่งต่อคุณค่าจากรุ่นสู่รุ่น
           </p>
           <Divider />
-          <p className="text-[#C8935A] text-sm font-serif italic">
+          <p className="text-[#C8935A] text-sm font-serif">
             "making every piece of wood warm the world."
           </p>
         </FadeIn>
@@ -173,8 +173,8 @@ export default function AboutPage() {
                   style={{ fontSize: 'clamp(1.5rem, 2.5vw, 2.8rem)' }}>
                   {s.title}
                 </h3>
-                <p className="text-xs text-zinc-400 italic mb-8 tracking-wider">{s.titleEn}</p>
-                <p className="text-zinc-500 font-light leading-[1.95] text-sm md:text-[0.95rem] text-justify">
+                <p className="text-xs text-zinc-500 mb-8 tracking-wider">{s.titleEn}</p>
+                <p className="text-zinc-700 leading-[1.95] text-base md:text-lg text-justify">
                   {s.desc}
                 </p>
               </FadeIn>
@@ -204,7 +204,7 @@ export default function AboutPage() {
               ].map((s, i) => (
                 <div key={i} className="px-8 py-10 text-center group hover:bg-white/4 transition-colors duration-500">
                   <p className="font-serif text-3xl md:text-4xl text-[#C8935A] leading-none mb-3">{s.n}</p>
-                  <p className="text-white text-sm font-light mb-1">{s.label}</p>
+                  <p className="text-white text-base mb-1">{s.label}</p>
                   <p className="text-white/30 text-[9px] uppercase tracking-widest">{s.sub}</p>
                 </div>
               ))}
@@ -243,9 +243,9 @@ export default function AboutPage() {
                 <h2 className="font-serif text-[#1C1917] leading-snug mb-6"
                   style={{ fontSize: 'clamp(1.6rem, 2.5vw, 2.8rem)' }}>
                   กระบวนการ<br />
-                  <span className="italic font-light text-zinc-400">สร้างสรรค์</span>
+                  <span className="font-light text-zinc-400">สร้างสรรค์</span>
                 </h2>
-                <p className="text-zinc-500 text-sm font-light leading-loose mb-8">
+                <p className="text-zinc-700 text-base leading-loose mb-8">
                   ด้วยคลังสินค้า 9,000 ตร.ม. สต็อกกว่า 10,000 ชิ้นจากซัพพลายเออร์ชั้นนำ
                   ในยุโรป แอฟริกา อเมริกา และเอเชียตะวันออกเฉียงใต้
                 </p>
@@ -265,9 +265,9 @@ export default function AboutPage() {
                       <div className="flex-1">
                         <div className="flex items-baseline gap-3 mb-2">
                           <p className="font-serif text-lg text-[#1C1917]">{p.th}</p>
-                          <p className="text-[9px] text-[#C8935A] uppercase tracking-widest hidden sm:block">{p.en}</p>
+                          <p className="text-[11px] text-[#C8935A] uppercase tracking-wider hidden sm:block">{p.en}</p>
                         </div>
-                        <p className="text-zinc-500 text-sm font-light leading-relaxed">{p.desc}</p>
+                        <p className="text-zinc-700 text-base md:text-lg leading-relaxed">{p.desc}</p>
                       </div>
                     </div>
                   </FadeIn>
@@ -287,10 +287,10 @@ export default function AboutPage() {
                 <Tag text="Global Material Heritage" />
                 <h2 className="font-serif text-white" style={{ fontSize: 'clamp(1.8rem, 3vw, 3rem)' }}>
                   แหล่งไม้หายาก<br />
-                  <span className="italic text-[#C8935A]">จากทั่วโลก</span>
+                  <span className="text-[#C8935A]">จากทั่วโลก</span>
                 </h2>
               </div>
-              <p className="text-white/40 text-xs font-light max-w-xs leading-loose">
+              <p className="text-white/60 text-sm max-w-xs leading-loose">
                 เราคัดสรรพันธุ์ไม้มากกว่า 40 ชนิด จาก 4 ภูมิภาคหลักของโลก
               </p>
             </div>
@@ -312,10 +312,10 @@ export default function AboutPage() {
                   </div>
                   <div className="p-6">
                     <p className="font-serif text-white text-xl mb-0.5">{r.region}</p>
-                    <p className="text-[#C8935A] text-[9px] uppercase tracking-[0.4em] mb-5">{r.en}</p>
+                    <p className="text-[#C8935A] text-[11px] uppercase tracking-[0.3em] mb-5">{r.en}</p>
                     <ul className="space-y-2">
                       {r.woods.map(w => (
-                        <li key={w} className="flex items-center gap-2 text-white/40 text-[10px] uppercase tracking-wider font-light group-hover:text-white/60 transition-colors duration-500">
+                        <li key={w} className="flex items-center gap-2 text-white/50 text-sm uppercase tracking-wider group-hover:text-white/70 transition-colors duration-500">
                           <span className="w-3 h-[1px] bg-[#C8935A] opacity-60 flex-shrink-0" />
                           {w}
                         </li>
@@ -345,8 +345,8 @@ export default function AboutPage() {
                   <div className={`flex flex-col md:flex-row gap-6 items-center ${i % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'}`}>
                     <div className={`w-full md:w-[45%] ${i % 2 === 0 ? 'md:text-right' : 'md:text-left'}`}>
                       <p className="font-serif text-4xl text-[#C8935A]">{e.y}</p>
-                      <p className="font-medium text-[#1C1917] mt-1 whitespace-pre-line leading-snug">{e.e}</p>
-                      <p className="text-xs text-zinc-400 tracking-widest uppercase mt-1">{e.city}</p>
+                      <p className="font-medium text-[#1C1917] text-base mt-1 whitespace-pre-line leading-snug">{e.e}</p>
+                      <p className="text-sm text-zinc-500 tracking-widest uppercase mt-1">{e.city}</p>
                     </div>
                     {/* dot */}
                     <div className="hidden md:flex w-4 h-4 rounded-full border-2 border-[#C8935A] bg-[#F7F4EF] flex-shrink-0 relative z-10" />
@@ -369,13 +369,13 @@ export default function AboutPage() {
             <h2 className="font-serif text-white leading-snug mb-8"
               style={{ fontSize: 'clamp(1.8rem, 4vw, 4.5rem)' }}>
               ความไม่สมบูรณ์<br />
-              <span className="italic text-[#C8935A]">คือความงามที่แท้จริง</span>
+              <span className="text-[#C8935A]">คือความงามที่แท้จริง</span>
             </h2>
             <p className="text-white/65 font-light text-sm md:text-base max-w-xl mx-auto leading-loose mb-3">
               ปมไม้ รอยแตก ลายธรรมชาติ — สิ่งเหล่านี้คือเรื่องราวที่ต้นไม้เขียนด้วยตัวเอง
               ตลอดร้อยปีแห่งการเติบโต ทุกร่องรอยคือหลักฐานว่ามันเคยมีชีวิตอยู่จริง
             </p>
-            <p className="text-[#C8935A] font-serif italic text-lg mt-6">
+            <p className="text-[#C8935A] font-serif text-lg mt-6">
               "ไม้แผ่นก็เหมือนมนุษย์ ต่างมีบุคลิกเฉพาะตัว<br />ไม่มีสองชิ้นที่เหมือนกัน"
             </p>
           </FadeIn>
@@ -389,18 +389,18 @@ export default function AboutPage() {
           <h2 className="font-serif text-[#1C1917] mb-4" style={{ fontSize: 'clamp(1.8rem, 3.5vw, 3.5rem)' }}>
             พร้อมค้นหาไม้แผ่นของคุณหรือยัง?
           </h2>
-          <p className="text-zinc-500 mb-12 max-w-lg mx-auto font-light leading-relaxed text-sm md:text-base">
+          <p className="text-zinc-700 mb-12 max-w-lg mx-auto leading-relaxed text-base md:text-lg">
             สำรวจคอลเลกชันไม้แผ่นหายากของเรา แต่ละชิ้นรอคอยการบอกเล่าเรื่องราวของมัน
             ในบ้านของคุณ
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link href="/woodslab"
-              className="group relative inline-flex items-center gap-3 px-10 py-4 border border-[#1C1917]/25 text-[10px] font-bold uppercase tracking-[0.35em] overflow-hidden transition-all duration-500 hover:border-[#C8935A]">
+              className="group relative inline-flex items-center gap-3 px-10 py-4 border border-[#1C1917]/25 text-xs font-bold uppercase tracking-[0.25em] overflow-hidden transition-all duration-500 hover:border-[#C8935A]">
               <span className="absolute inset-0 w-0 group-hover:w-full bg-[#C8935A] transition-all duration-500 ease-out" />
               <span className="relative z-10 group-hover:text-white transition-colors duration-500">สำรวจคอลเลกชัน</span>
             </Link>
             <Link href="/contact"
-              className="group relative inline-flex items-center gap-3 px-10 py-4 border border-[#1C1917]/25 text-[10px] font-bold uppercase tracking-[0.35em] overflow-hidden transition-all duration-500 hover:border-[#C8935A]">
+              className="group relative inline-flex items-center gap-3 px-10 py-4 border border-[#1C1917]/25 text-xs font-bold uppercase tracking-[0.25em] overflow-hidden transition-all duration-500 hover:border-[#C8935A]">
               <span className="absolute inset-0 w-0 group-hover:w-full bg-[#C8935A] transition-all duration-500 ease-out" />
               <span className="relative z-10 group-hover:text-white transition-colors duration-500">ติดต่อเรา</span>
             </Link>

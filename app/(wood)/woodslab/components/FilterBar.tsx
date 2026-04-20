@@ -1,11 +1,12 @@
 'use client'
 import React, { useRef, useEffect, useState } from 'react';
 import { STATUS_TABS, HEADERS, PRODUCT_TYPES } from '../config';
-import { FilterState } from '../../actions/product';
+// ยายเพิ่ม type CategoryKey เข้ามาตรงนี้นะจ๊ะ
+import { FilterState, type CategoryKey } from '../../actions/product';
 
 interface FilterBarProps {
-  currentCategory: 'slabs' | 'rough';
-  handleCategoryChange: (cat: 'slabs' | 'rough') => void;
+  currentCategory: CategoryKey; // ยายแก้ตรงนี้
+  handleCategoryChange: (cat: CategoryKey) => void; // และตรงนี้จ้ะ
   filters: FilterState;
   setFilters: React.Dispatch<React.SetStateAction<FilterState>>;
   handleFilterChange: (key: keyof FilterState, val: string) => void;
@@ -35,6 +36,15 @@ export default function FilterBar({
 
   const barRef = useRef<HTMLDivElement>(null)
   const [scrolledEnd, setScrolledEnd] = useState(false)
+
+  // 💡 ยายสร้างตัวแปรเก็บหมวดหมู่ทั้งหมดไว้ตรงนี้ จะได้แก้ไขง่ายๆ จ้ะ
+  const CATEGORY_TABS: { key: CategoryKey, label: string }[] = [
+    { key: 'all', label: 'All Items' },
+    { key: 'slabs', label: 'Wood Slabs' },
+    { key: 'rough', label: 'Rough Wood' },
+    { key: 'leg', label: 'Table Legs' },
+    { key: 'chair', label: 'Chairs / Stools' }
+  ];
 
   useEffect(() => {
     const el = barRef.current
@@ -67,7 +77,8 @@ export default function FilterBar({
     return "";
   };
 
-  const hasAnyFilter = HEADERS.some(h => getChip(h.key) !== "") || currentCategory !== 'slabs';
+  // ยายเปลี่ยนจาก !== 'slabs' เป็น !== 'all' จ้ะ
+  const hasAnyFilter = HEADERS.some(h => getChip(h.key) !== "") || currentCategory !== 'all';
 
   const clearAll = () => {
     handleFilterChange("type", "");
@@ -94,7 +105,12 @@ export default function FilterBar({
           gap: 0;
           margin-bottom: 28px;
           border-bottom: 1px solid var(--line);
+          /* ยายเพิ่ม overflow เผื่อหน้าจอมือถือเล็กๆ จะได้ปัดซ้ายขวาได้จ้ะ */
+          overflow-x: auto;
+          scrollbar-width: none;
         }
+        .fb-cat-row::-webkit-scrollbar { display: none; }
+        
         .fb-cat-btn {
           background: none;
           border: none;
@@ -102,12 +118,12 @@ export default function FilterBar({
           padding: 10px 22px 10px 0;
           margin-bottom: -1px;
           font-family: var(--font-serif);
-          font-style: italic;
           font-size: 1.05rem;
           color: var(--text-muted);
           cursor: pointer;
           transition: all 0.25s;
           letter-spacing: 0.02em;
+          white-space: nowrap;
         }
         .fb-cat-btn:hover { color: var(--text-main); }
         .fb-cat-btn.active {
@@ -259,7 +275,6 @@ export default function FilterBar({
         }
         .fb-tray-title {
           font-family: var(--font-serif);
-          font-style: italic;
           font-size: 0.8rem;
           font-weight: 400;
           color: var(--text-muted);
@@ -453,22 +468,18 @@ export default function FilterBar({
 
       <div className="fb-root">
 
-        {/* ── Category tabs ── */}
+        {/* ── Category tabs (ยายแก้วนลูปปุ่มตรงนี้จ้ะ) ── */}
         <div className="fb-cat-row">
-          <button
-            className={`fb-cat-btn${currentCategory === 'slabs' ? ' active' : ''}`}
-            onClick={() => handleCategoryChange('slabs')}
-            suppressHydrationWarning
-          >
-            Wood Slabs
-          </button>
-          <button
-            className={`fb-cat-btn${currentCategory === 'rough' ? ' active' : ''}`}
-            onClick={() => handleCategoryChange('rough')}
-            suppressHydrationWarning
-          >
-            Rough Wood
-          </button>
+          {CATEGORY_TABS.map((tab) => (
+            <button
+              key={tab.key}
+              className={`fb-cat-btn${currentCategory === tab.key ? ' active' : ''}`}
+              onClick={() => handleCategoryChange(tab.key)}
+              suppressHydrationWarning
+            >
+              {tab.label}
+            </button>
+          ))}
         </div>
 
         {/* ── Filter bar ── */}
@@ -520,27 +531,6 @@ export default function FilterBar({
             <div className="fb-tray-title">
               {HEADERS.find(x => x.key === openKey)?.label}
             </div>
-
-            {/* Type */}
-            {openKey === "type" && (
-              <div className="fb-tray-options">
-                <button
-                  className={`fb-opt${filters.type === "" ? ' active' : ''}`}
-                  onClick={() => handleFilterChange("type", "")}
-                >
-                  All
-                </button>
-                {PRODUCT_TYPES.map((opt) => (
-                  <button
-                    key={opt}
-                    className={`fb-opt${filters.type === opt ? ' active' : ''}`}
-                    onClick={() => handleFilterChange("type", opt)}
-                  >
-                    {opt}
-                  </button>
-                ))}
-              </div>
-            )}
 
             {/* Material / Panel */}
             {["material", "panel"].includes(openKey) && (
@@ -606,18 +596,18 @@ export default function FilterBar({
                   )}
                   <div className="fb-range-inputs">
                     <div className="fb-range-field">
-                      <span className="fb-range-lbl">Min (cm)</span>
+                      <span className="fb-range-lbl">Min (mm)</span>
                       <input type="number" className="fb-range-inp" placeholder="0" value={filters[minKey]} onChange={e => handleFilterChange(minKey, e.target.value)} />
                     </div>
                     <span className="fb-range-sep">—</span>
                     <div className="fb-range-field">
-                      <span className="fb-range-lbl">Max (cm)</span>
+                      <span className="fb-range-lbl">Max (mm)</span>
                       <input type="number" className="fb-range-inp" placeholder="Any" value={filters[maxKey]} onChange={e => handleFilterChange(maxKey, e.target.value)} />
                     </div>
                   </div>
                   {stats?.min !== undefined && (
                     <div className="fb-range-stat">
-                      Available: <span>{stats.min} – {stats.max} cm</span>
+                      Available: <span>{stats.min} – {stats.max} mm</span>
                     </div>
                   )}
                 </div>

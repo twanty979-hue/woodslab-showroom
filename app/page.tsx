@@ -141,8 +141,8 @@ export default function HomePage() {
     {/* ถ้ามีหัวข้อหรือ Tag อยู่ตรงนี้ด้วย มันก็จะกลางไปด้วยกันครับ */}
     
     <div className="flex flex-wrap justify-center gap-3 mt-8">
-      <Btn href="/woodslab" label="ดูสินค้าทั้งหมด" dark />
-      <Btn href="/woodslab?cat=rough" label="Raw Wood ไม้ดิบ" dark />
+      <Btn href="/woodslab" label="Wood Slab" dark />
+      <Btn href="/woodslab?cat=rough" label="Raw Wood " dark />
     </div>
   </FadeIn>
 </div>
@@ -192,7 +192,7 @@ export default function HomePage() {
               <Tag text="Who We Are — Our Identity" />
               <h2 className="font-serif text-[#1C1917] leading-snug mb-8" style={{ fontSize: 'clamp(1.9rem, 3.5vw, 3.5rem)' }}>
                 เราคือใคร<br />
-                <span className="italic font-light text-zinc-500">ตัวตนและจิตวิญญาณของเรา</span>
+                <span className="font-light text-zinc-400" style={{ fontSize: 'clamp(1rem, 2vw, 1.4rem)', letterSpacing: '0.05em' }}>ตัวตนและจิตวิญญาณของเรา</span>
               </h2>
               <div className="border-l-2 border-[#C8935A]/40 pl-7 space-y-5 text-zinc-500 font-light text-sm md:text-base leading-loose mb-10">
                 <p>
@@ -217,7 +217,7 @@ export default function HomePage() {
                 ].map(s => (
                   <div key={s.l} className="text-center">
                     <p className="font-serif text-3xl text-[#1C1917]">{s.n}</p>
-                    <p className="text-[10px] text-zinc-400 uppercase tracking-wider mt-0.5">{s.l}</p>
+                    <p className="text-xs text-zinc-400 uppercase tracking-wider mt-0.5">{s.l}</p>
                   </div>
                 ))}
               </div>
@@ -237,7 +237,7 @@ export default function HomePage() {
             <div className="text-center mb-20">
               <Tag text="Our Collections" />
               <h2 className="font-serif text-[#1C1917] mb-3" style={{ fontSize: 'clamp(2rem, 4vw, 4rem)' }}>คอลเลกชันของเรา</h2>
-              <p className="text-zinc-400 text-xs uppercase tracking-[0.35em]">ไม้แผ่นธรรมชาติ & ศิลปะเรซินสมัยใหม่</p>
+              <p className="text-zinc-400 text-sm uppercase tracking-[0.35em]">ไม้แผ่นธรรมชาติ & ศิลปะเรซินสมัยใหม่</p>
             </div>
           </FadeIn>
 
@@ -246,7 +246,7 @@ export default function HomePage() {
             <FadeIn>
               <div className="flex items-end justify-between mb-10 pb-4 border-b border-[#E8E2D9]">
                 <div>
-                  <h3 className="font-serif italic text-2xl md:text-3xl text-[#1C1917]">01. โต๊ะไม้แผ่นธรรมชาติ</h3>
+                  <h3 className="font-serif text-2xl md:text-3xl text-[#1C1917]">01. โต๊ะไม้แผ่นธรรมชาติ</h3>
                   <p className="text-xs text-zinc-400 mt-1">Solid Live-Edge Wood Slabs</p>
                 </div>
                 <Link href="/woodslab" className="text-xs uppercase tracking-widest text-[#C8935A] hover:text-[#1C1917] transition-colors">ดูทั้งหมด →</Link>
@@ -260,7 +260,7 @@ export default function HomePage() {
                     <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
                     <div className="absolute bottom-0 left-0 right-0 p-5 translate-y-2 group-hover:translate-y-0 transition-transform duration-500">
                       <p className="text-[9px] text-white/60 uppercase tracking-widest mb-1">{w.note}</p>
-                      <p className="text-white font-serif text-xl italic leading-tight">{w.th}</p>
+                      <p className="text-white font-serif text-xl leading-tight">{w.th}</p>
                       <p className="text-white/60 text-[10px] mt-0.5">{w.en}</p>
                     </div>
                   </Link>
@@ -274,7 +274,7 @@ export default function HomePage() {
             <FadeIn>
               <div className="flex items-end justify-between mb-10 pb-4 border-b border-[#E8E2D9]">
                 <div>
-                  <h3 className="font-serif italic text-2xl md:text-3xl text-[#1C1917]">02. ศิลปะเรซิน Crystal</h3>
+                  <h3 className="font-serif text-2xl md:text-3xl text-[#1C1917]">02. ศิลปะเรซิน Crystal</h3>
                   <p className="text-xs text-zinc-400 mt-1">Crystal Resin Art — Modern Fusion</p>
                 </div>
                 <Link href="/woodslab" className="text-xs uppercase tracking-widest text-[#C8935A] hover:text-[#1C1917] transition-colors">ดูทั้งหมด →</Link>
@@ -288,7 +288,7 @@ export default function HomePage() {
                     <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
                     <div className="absolute bottom-0 left-0 right-0 p-5 translate-y-2 group-hover:translate-y-0 transition-transform duration-500">
                       <p className="text-[9px] text-white/60 uppercase tracking-widest mb-1">Epoxy & Wood</p>
-                      <p className="text-white font-serif text-xl italic leading-tight">{w.th}</p>
+                      <p className="text-white font-serif text-xl leading-tight">{w.th}</p>
                       <p className="text-white/60 text-[10px] mt-0.5">{w.en}</p>
                     </div>
                   </Link>
@@ -312,7 +312,7 @@ export default function HomePage() {
                 <Tag text="Design Philosophy" />
                 <h2 className="font-serif leading-snug mb-8 text-white" style={{ fontSize: 'clamp(1.8rem, 3vw, 3rem)' }}>
                   THE WABI-SABI<br />
-                  <span className="italic text-[#C8935A]">Aesthetics of a Single Board</span>
+                  <span className="text-[#C8935A]">Aesthetics of a Single Board</span>
                 </h2>
                 <p className="text-zinc-400 font-light leading-loose text-sm md:text-base mb-6">
                   เราไม่ได้หยุดอยู่เพียงเฉดสีธรรมชาติ แต่สร้างมิติใหม่ผ่านกระบวนการทำสีอันเป็นเอกลักษณ์
@@ -322,7 +322,7 @@ export default function HomePage() {
                   โดยยังคงรักษาเสน่ห์ของลวดลายไม้ไว้ครบถ้วนพร้อมเติมเต็มด้วยเอฟเฟกต์สีแบบวาบิ-ซาบิ
                   ทั้งงดงามเฉพาะตัว — ความไม่สมบูรณ์คือความสมบูรณ์แบบที่แท้จริง
                 </p>
-                <blockquote className="border-l-2 border-[#C8935A] pl-6 text-white/80 font-serif italic text-lg">
+                <blockquote className="border-l-2 border-[#C8935A] pl-6 text-white/80 font-serif text-lg">
                   "ไม้แผ่นก็เหมือนมนุษย์ ต่างมีบุคลิกเฉพาะตัว<br />
                   เฉดสี ปมไม้ หรือร่องรอยแห่งกาลเวลา"
                 </blockquote>
@@ -385,9 +385,9 @@ export default function HomePage() {
               <FadeIn key={i} delay={i * 100}>
                 <div className="border border-[#DDD6C9] bg-white p-8 group hover:border-[#C8935A] transition-colors duration-500">
                   <p className="font-serif text-5xl text-[#DDD6C9] group-hover:text-[#C8935A] transition-colors duration-500 mb-6 leading-none">{s.n}</p>
-                  <p className="font-serif text-lg text-[#1C1917] mb-2">{s.th}</p>
-                  <p className="text-[10px] text-[#C8935A] uppercase tracking-widest mb-4">{s.en}</p>
-                  <p className="text-zinc-500 text-xs leading-loose font-light">{s.desc}</p>
+                  <p className="font-serif text-xl text-[#1C1917] mb-2">{s.th}</p>
+                  <p className="text-xs text-[#C8935A] uppercase tracking-widest mb-4">{s.en}</p>
+                  <p className="text-zinc-600 text-base leading-loose">{s.desc}</p>
                 </div>
               </FadeIn>
             ))}
@@ -406,7 +406,7 @@ export default function HomePage() {
             <Tag text="Infinite Possibilities — Beyond Just a Table" />
             <h2 className="font-serif text-white leading-snug mb-6" style={{ fontSize: 'clamp(2.2rem, 5vw, 5rem)' }}>
               ไม้แผ่นหนึ่งแผ่น<br />
-              <span className="italic text-[#C8935A]">ความเป็นไปได้ไม่สิ้นสุด</span>
+              <span className="text-[#C8935A]">ความเป็นไปได้ไม่สิ้นสุด</span>
             </h2>
             <p className="text-white/60 font-light text-sm md:text-base max-w-lg mx-auto mb-4 leading-relaxed">
               โต๊ะทาน, โต๊ะชา, เคาน์เตอร์, บาร์, ชั้นวาง, ประตู, ผนัง — ทุกพื้นที่ในบ้านของคุณ
@@ -445,8 +445,8 @@ export default function HomePage() {
                   <div className="absolute bottom-0 left-0 right-0 p-7">
                     <p className="text-[#C8935A] text-[9px] uppercase tracking-widest mb-1">{p.client}</p>
                     <h3 className="font-serif text-white text-xl mb-1">{p.titleTH}</h3>
-                    <p className="text-white/60 text-xs italic mb-3">{p.title}</p>
-                    <p className="text-white/70 text-xs font-light leading-relaxed max-w-sm opacity-0 group-hover:opacity-100 transition-opacity duration-500 translate-y-3 group-hover:translate-y-0">{p.desc}</p>
+                    <p className="text-white/60 text-xs mb-3 tracking-wide">{p.title}</p>
+                    <p className="text-white/70 text-sm font-light leading-relaxed max-w-sm opacity-0 group-hover:opacity-100 transition-opacity duration-500 translate-y-3 group-hover:translate-y-0">{p.desc}</p>
                   </div>
                 </div>
               </FadeIn>
@@ -480,7 +480,7 @@ export default function HomePage() {
                     <span className="font-serif text-[#C8935A] text-xl">{s.n}</span>
                   </div>
                   <p className="font-serif text-base text-[#1C1917] mb-1">{s.th}</p>
-                  <p className="text-[10px] text-zinc-400 uppercase tracking-wider">{s.en}</p>
+                  <p className="text-xs text-zinc-400 uppercase tracking-wider">{s.en}</p>
                 </div>
               </FadeIn>
             ))}
@@ -508,7 +508,7 @@ export default function HomePage() {
             <Tag text="Maintenance Instructions — After-Sales Service" />
             <h2 className="font-serif text-[#1C1917] mb-10" style={{ fontSize: 'clamp(1.8rem, 2.8vw, 2.8rem)' }}>
               การดูแลรักษา<br />
-              <span className="italic font-light text-zinc-500">ไม้แผ่นของคุณ</span>
+              <span className="font-light text-zinc-400" style={{ fontSize: 'clamp(1rem, 2vw, 1.4rem)', letterSpacing: '0.05em' }}>ไม้แผ่นของคุณ</span>
             </h2>
             <div className="space-y-7">
               {[
@@ -520,8 +520,8 @@ export default function HomePage() {
                 <div key={i} className="flex gap-5 items-start">
                   <div className="w-1.5 h-1.5 rounded-full bg-[#C8935A] mt-2.5 flex-shrink-0" />
                   <div>
-                    <p className="font-medium text-[#1C1917] text-sm mb-1">{c.title}</p>
-                    <p className="text-zinc-500 text-xs font-light leading-loose">{c.desc}</p>
+                    <p className="font-semibold text-[#1C1917] text-lg mb-1">{c.title}</p>
+                    <p className="text-zinc-600 text-base leading-loose">{c.desc}</p>
                   </div>
                 </div>
               ))}
@@ -568,7 +568,7 @@ export default function HomePage() {
             <Tag text="Visit Us — Experience the Texture" />
             <h2 className="font-serif text-white leading-snug" style={{ fontSize: 'clamp(2rem, 4vw, 4rem)' }}>
               สัมผัส<br />
-              <span className="italic text-[#C8935A]">ความจริงของไม้</span>
+              <span className="text-[#C8935A]">ความจริงของไม้</span>
             </h2>
             <div className="border-l border-white/10 pl-6 space-y-3 text-zinc-400 font-light text-sm leading-loose">
               <p>🏢 ชั้น 13 อาคาร WanNeng, No. 10 Chuangye Road<br />Fuzhou High-tech Zone, China</p>

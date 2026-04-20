@@ -257,6 +257,28 @@ function ProductContent() {
     return rows
   }
 
+  // --- IMAGE NAVIGATION ---
+  const touchStartX = useRef<number>(0)
+
+  const goNext = useCallback(() => {
+    const idx = dedupImages.indexOf(activeImage)
+    if (idx < dedupImages.length - 1) setActiveImage(dedupImages[idx + 1])
+  }, [activeImage, dedupImages])
+
+  const goPrev = useCallback(() => {
+    const idx = dedupImages.indexOf(activeImage)
+    if (idx > 0) setActiveImage(dedupImages[idx - 1])
+  }, [activeImage, dedupImages])
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX
+  }
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    const diff = touchStartX.current - e.changedTouches[0].clientX
+    if (Math.abs(diff) > 40) diff > 0 ? goNext() : goPrev()
+  }
+
   // --- EVENTS ---
   const handleZoom = (e: React.MouseEvent) => {
     const container = zoomContainerRef.current
@@ -442,6 +464,35 @@ const maxStock = getStockQty(product)
         }
         .main-image-frame:hover .zoom-hint { opacity: 1; }
 
+        @media (hover: none) {
+          .main-image-frame { cursor: default; }
+          .zoom-hint { display: none !important; }
+          .main-image-frame.zoomed img { transform: none !important; }
+        }
+
+        .img-nav {
+            position: absolute; top: 50%; transform: translateY(-50%);
+            background: rgba(255,255,255,0.85); border: none; border-radius: 50%;
+            width: 40px; height: 40px; font-size: 1.6rem; line-height: 1;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer; z-index: 5; transition: all 0.2s;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15); color: #333;
+        }
+        .img-nav:hover:not(:disabled) { background: #fff; box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
+        .img-nav:disabled { opacity: 0.25; cursor: default; }
+        .img-nav-prev { left: 10px; }
+        .img-nav-next { right: 10px; }
+
+        .img-dots {
+            position: absolute; bottom: 12px; left: 50%; transform: translateX(-50%);
+            display: flex; gap: 6px; z-index: 5;
+        }
+        .img-dot {
+            width: 6px; height: 6px; border-radius: 50%;
+            background: rgba(255,255,255,0.6); transition: all 0.2s;
+        }
+        .img-dot.active { background: #fff; transform: scale(1.3); }
+
         .thumbnails {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
@@ -460,10 +511,10 @@ const maxStock = getStockQty(product)
         .thumb img { width: 100%; height: 100%; object-fit: cover; }
 
         /* DETAILS SECTION */
-        .details { width: 100%; font-family: 'Playfair Display', serif; }
-        .p-sku { font-size: 0.85rem; color: #999; letter-spacing: 2px; margin-bottom: 8px; font-family: 'Playfair Display', serif; font-style: italic; }
+        .details { width: 100%; font-family: 'Kanit', sans-serif; }
+        .p-sku { font-size: 0.85rem; color: #999; letter-spacing: 2px; margin-bottom: 8px; font-family: 'Kanit', sans-serif;}
         .p-header-row { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; margin-bottom: 20px; }
-        .p-title-main { margin: 0; font-size: 2rem; line-height: 1.3; font-weight: 600; color: #1a1a1a; font-family: 'Playfair Display', serif; }
+        .p-title-main { margin: 0; font-size: 2rem; line-height: 1.3; font-weight: 600; color: #1a1a1a; font-family: 'Kanit', sans-serif; }
 
         .like-btn-wrap { display: flex; align-items: center; cursor: pointer; min-width: 48px; padding: 8px; border-radius: 50%; transition: background 0.2s; }
         .like-btn-wrap:hover { background: #fff0f0; }
@@ -476,10 +527,9 @@ const maxStock = getStockQty(product)
           width: 40%;
           color: #aaa !important;
           font-weight: 400;
-          font-style: italic;
           font-size: 0.82rem;
           letter-spacing: 0.04em;
-          font-family: 'Playfair Display', serif;
+          font-family: 'Kanit', sans-serif;
         }
         .details .spec-value {
           width: 60%;
@@ -494,7 +544,7 @@ const maxStock = getStockQty(product)
         }
 
         .price-block { margin-bottom: 25px; border-top: 1px solid #eee; border-bottom: 1px solid #eee; padding: 20px 0; }
-        .price { font-size: 1.8rem; font-weight: 500; color: #1a1a1a; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; font-family: 'Playfair Display', serif; }
+        .price { font-size: 1.8rem; font-weight: 500; color: #1a1a1a; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; font-family: 'Kanit', sans-serif; }
         .price-old { font-size: 1rem; color: #999; text-decoration: line-through; font-weight: 400; }
         .price-new { color: #e74c3c; }
         .badge-discount { background: #e74c3c; color: white; padding: 2px 6px; border-radius: 4px; font-size: 0.7rem; font-weight: 700; }
@@ -624,10 +674,21 @@ const maxStock = getStockQty(product)
   
         <div className="product-container">
           <div className="gallery">
-            <div className="main-image-frame" id="zoomContainer" ref={zoomContainerRef} onMouseMove={handleZoom} onMouseLeave={handleLeaveZoom}>
+            <div className="main-image-frame" id="zoomContainer" ref={zoomContainerRef} onMouseMove={handleZoom} onMouseLeave={handleLeaveZoom} onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd}>
               {activeImage ? <img src={activeImage} alt={product.name} id="mainImage" ref={mainImageRef} /> : <div style={{display:'grid',placeItems:'center',height:'100%',color:'#666'}}>No Image</div>}
               {renderStatusOverlay(meta)}
               <div className="zoom-hint">HOVER TO ZOOM</div>
+              {dedupImages.length > 1 && (
+                <>
+                  <button className="img-nav img-nav-prev" onClick={e => { e.stopPropagation(); goPrev() }} disabled={dedupImages.indexOf(activeImage) === 0} aria-label="Previous">&#8249;</button>
+                  <button className="img-nav img-nav-next" onClick={e => { e.stopPropagation(); goNext() }} disabled={dedupImages.indexOf(activeImage) === dedupImages.length - 1} aria-label="Next">&#8250;</button>
+                  <div className="img-dots">
+                    {dedupImages.map((_, i) => (
+                      <span key={i} className={`img-dot${dedupImages.indexOf(activeImage) === i ? ' active' : ''}`} />
+                    ))}
+                  </div>
+                </>
+              )}
             </div>
             <div className="thumbnails">
               {dedupImages.map((u, i) => (
@@ -639,7 +700,7 @@ const maxStock = getStockQty(product)
           </div>
   
           <div className="details">
-            <div className="p-sku">SKU: {product.sku || "N/A"}</div>
+            <div className="p-sku">Num: {product.barcode || "—"}</div>
             <div className="p-header-row">
                 <h1 className="p-title-main">{product.name || "ติดต่อสอบถาม"}</h1>
                 <div className="like-btn-wrap" onClick={handleToggleLike} title={isLiked ? "Unlike" : "Like"}>
@@ -654,8 +715,7 @@ const maxStock = getStockQty(product)
                     <td style={{
                       padding: '13px 0',
                       width: '40%',
-                      fontFamily: "'Playfair Display', serif",
-                      fontStyle: 'italic',
+                      fontFamily: "'Kanit', sans-serif",
                       fontWeight: 400,
                       fontSize: '0.85rem',
                       color: '#999',
@@ -723,7 +783,7 @@ const maxStock = getStockQty(product)
                 {processing ? "Processing..." : "Add to Cart"}
               </button>
               <button className="btn" onClick={handleDeposit} disabled={!meta.canBuy || processing}>
-                Book / Deposit 
+                Deposit 
               </button>
             </div>
   

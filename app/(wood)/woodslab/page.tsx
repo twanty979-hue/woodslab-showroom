@@ -3,7 +3,7 @@ export const dynamic = 'force-dynamic'
 import { Suspense } from 'react'
 import React, { useState, useEffect, useCallback, useRef } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
-import { getProducts, getActiveDiscounts, getMinMax, getRangeValues, getDistinctOptions, type FilterState } from '../../actions/product'
+import { getProducts, getActiveDiscounts, getMinMax, getRangeValues, getDistinctOptions, type FilterState, type CategoryKey } from '../../actions/product'
 import './woodslab.css'
 
 import { LIMIT, RANGE_COLS } from './config'
@@ -14,7 +14,7 @@ import FilterBar from './components/FilterBar'
 function WoodSlabContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
-  const currentCategory = (searchParams.get('cat') as 'slabs' | 'rough') || 'slabs'
+  const currentCategory = (searchParams.get('cat') as CategoryKey) || 'all'
 
   const [isDark, setIsDark] = useState(false)
   const [mounted, setMounted] = useState(false)
@@ -72,7 +72,7 @@ function WoodSlabContent() {
     router.replace(`?${params.toString()}`)
   }, [searchParams, router])
 
-  const handleCategoryChange = (cat: 'slabs' | 'rough') => {
+  const handleCategoryChange = (cat: CategoryKey) => {
     // รีเซ็ต page ไปด้วยในครั้งเดียว ไม่ต้อง setPage แยก
     router.push(`/woodslab?cat=${cat}`)
     setFilters(prev => ({ ...prev, type: "", material: "", panel: "" }))
@@ -208,8 +208,17 @@ function WoodSlabContent() {
         <header>
           <h1>The Best <span>Wood</span></h1>
           <div className="subtitle">
-            {currentCategory === 'slabs' ? 'Premium Live Edge Slabs' : 'High Quality Rough Wood'}
+            {currentCategory === 'slabs' ? 'Premium Live Edge Slabs'
+              : currentCategory === 'rough' ? 'High Quality Rough Wood'
+              : currentCategory === 'leg' ? 'Table Legs & Furniture Legs'
+              : currentCategory === 'chair' ? 'Chairs & Stools'
+              : 'All Products'}
           </div>
+          {!loading && totalCount > 0 && (
+            <div style={{ marginTop: '8px', fontSize: '0.78rem', letterSpacing: '3px', textTransform: 'uppercase', color: 'var(--text-muted)', fontVariantNumeric: 'lining-nums tabular-nums' }}>
+              {totalCount.toLocaleString()} items
+            </div>
+          )}
         </header>
 
         <div className="controls" style={{ marginTop: '30px' }}>
@@ -319,13 +328,13 @@ function WoodSlabContent() {
               Next →
             </button>
           </div>
-          <div style={{ fontSize: '0.85rem', letterSpacing: '0.05em', color: '#888', fontWeight: 500, backgroundColor: '#f9f9f9', padding: '6px 16px', borderRadius: '20px', border: '1px solid #f0f0f0' }}>
+          <div style={{ fontSize: '0.85rem', letterSpacing: '0.05em', color: '#888', fontWeight: 500, backgroundColor: '#f9f9f9', padding: '6px 16px', borderRadius: '20px', border: '1px solid #f0f0f0', fontVariantNumeric: 'lining-nums tabular-nums' }}>
             {pageInfo}
           </div>
         </div>
-        <div style={{ textAlign: 'center', marginTop: 10, fontSize: '0.8rem', color: 'var(--text-muted)' }}>{statusText}</div>
+        <div style={{ textAlign: 'center', marginTop: 10, fontSize: '0.8rem', color: 'var(--text-muted)', fontVariantNumeric: 'lining-nums tabular-nums' }}>{statusText}</div>
         <div className="hint">
-          Category: <b>{currentCategory === 'slabs' ? 'WOODSLABS' : 'ROUGH WOOD'}</b>
+          Category: <b>{currentCategory.toUpperCase()}</b>
         </div>
       </div>
     </div>

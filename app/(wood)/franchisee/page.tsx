@@ -21,7 +21,7 @@ const FadeIn = ({ children, className = '', delay = 0 }: { children: React.React
 };
 
 const Tag = ({ text }: { text: string }) => (
-  <p className="text-[#C8935A] text-[9px] font-bold uppercase tracking-[0.5em] mb-5">{text}</p>
+  <p className="text-[#C8935A] text-[11px] font-bold uppercase tracking-[0.4em] mb-5">{text}</p>
 );
 
 /* ─── Data ─── */
@@ -155,7 +155,7 @@ export default function FranchiseePage() {
           <h2 className="font-serif text-[#1C1917] leading-snug mb-8"
             style={{ fontSize: 'clamp(1.6rem, 3.5vw, 3.5rem)' }}>
             "เติบโตไปพร้อมกับเรา<br className="hidden md:block" />
-            <span className="italic text-zinc-400 font-light"> ภายใต้แบรนด์ที่ตลาดเชื่อถือ"</span>
+            <span className="text-zinc-400 font-light"> ภายใต้แบรนด์ที่ตลาดเชื่อถือ"</span>
           </h2>
           <p className="text-zinc-500 font-light leading-loose text-sm md:text-lg max-w-2xl mx-auto">
             WOODSLABS เปิดโอกาสให้นักลงทุนและผู้ประกอบการที่มีวิสัยทัศน์ร่วมขยายแบรนด์ระดับโลก
@@ -196,8 +196,8 @@ export default function FranchiseePage() {
                     style={{ fontSize: 'clamp(1.5rem, 2.5vw, 2.8rem)' }}>
                     {a.title}
                   </h3>
-                  <p className="text-xs text-zinc-400 italic mb-8 tracking-wider">{a.titleEn}</p>
-                  <p className="text-zinc-500 font-light leading-[1.95] text-sm md:text-[0.95rem] text-justify">
+                  <p className="text-xs text-zinc-400 mb-8 tracking-wider">{a.titleEn}</p>
+                  <p className="text-zinc-700 leading-[1.95] text-base md:text-lg text-justify">
                     {a.desc}
                   </p>
                 </FadeIn>
@@ -224,7 +224,7 @@ export default function FranchiseePage() {
             <FadeIn className="text-center">
               <Tag text="Support System — Exclusive Services" />
               <h2 className="font-serif text-white" style={{ fontSize: 'clamp(1.8rem, 3.5vw, 3.5rem)' }}>
-                สิทธิประโยชน์<span className="italic text-[#C8935A]">เฉพาะพาร์ทเนอร์</span>
+                สิทธิประโยชน์<span className="text-[#C8935A]">เฉพาะพาร์ทเนอร์</span>
               </h2>
             </FadeIn>
           </div>
@@ -240,7 +240,7 @@ export default function FranchiseePage() {
                     <div>
                       <p className="font-serif text-white text-lg mb-1 group-hover:text-[#C8935A] transition-colors duration-500">{s.th}</p>
                       <p className="text-[#C8935A] text-[8px] uppercase tracking-[0.4em] mb-3 opacity-60">{s.en}</p>
-                      <p className="text-white/35 text-sm font-light leading-relaxed group-hover:text-white/55 transition-colors duration-500">{s.desc}</p>
+                      <p className="text-white/50 text-base leading-relaxed group-hover:text-white/70 transition-colors duration-500">{s.desc}</p>
                     </div>
                   </div>
                 </div>
@@ -260,13 +260,13 @@ export default function FranchiseePage() {
             <h2 className="font-serif text-white leading-snug mb-10"
               style={{ fontSize: 'clamp(1.8rem, 4vw, 4rem)' }}>
               โอกาสลงทุน<br />
-              <span className="italic text-[#C8935A]">ที่เติบโตไปด้วยกัน</span>
+              <span className="text-[#C8935A]">ที่เติบโตไปด้วยกัน</span>
             </h2>
-            <p className="text-white/60 font-light text-sm md:text-base max-w-xl mx-auto leading-loose mb-4">
+            <p className="text-white/70 text-base md:text-lg max-w-xl mx-auto leading-loose mb-4">
               WOODSLABS เติบโตจากรากฐานเฟอร์นิเจอร์ไม้เนื้อแข็งสู่แบรนด์ระดับนานาชาติ
               เราพร้อมร่วมมือกับเจ้าของแบรนด์ นักออกแบบ และโชว์รูมผ่านรูปแบบความร่วมมือที่ยืดหยุ่น
             </p>
-            <p className="text-white/60 font-light text-sm md:text-base max-w-xl mx-auto leading-loose mb-14">
+            <p className="text-white/70 text-base md:text-lg max-w-xl mx-auto leading-loose mb-14">
               เราสนับสนุนแฟรนไชส์แบบเฉพาะตัว พร้อมโซลูชันที่ออกแบบเพื่อคุณโดยเฉพาะ
               ร่วมสร้างพื้นที่ที่ผสมผสานความเป็นมนุษย์และธรรมชาติในยุคใหม่
             </p>
@@ -315,7 +315,7 @@ export default function FranchiseePage() {
           <h2 className="font-serif text-[#1C1917] mb-4" style={{ fontSize: 'clamp(1.8rem, 3.5vw, 3.5rem)' }}>
             พร้อมเริ่มต้นกับเราหรือยัง?
           </h2>
-          <p className="text-zinc-500 mb-12 max-w-lg mx-auto font-light leading-relaxed text-sm md:text-base">
+          <p className="text-zinc-700 mb-12 max-w-lg mx-auto leading-relaxed text-base md:text-lg">
             ส่งข้อความมาหาเราวันนี้ ทีมงานของเราพร้อมให้คำปรึกษาและตอบทุกคำถาม
             เพื่อช่วยให้คุณตัดสินใจได้อย่างมั่นใจ
           </p>

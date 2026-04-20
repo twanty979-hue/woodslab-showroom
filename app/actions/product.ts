@@ -11,7 +11,20 @@ const TABLE = "products"
 const LIST_SELECT = "id,name,sku,barcode,price,image_url,status,specs,updated_at,created_at,stock(qty)"
 
 // --- Helper Functions ---
-const getDbCategory = (category: string) => category === 'rough' ? 'rough_wood' : 'SLABS'
+export type CategoryKey = 'all' | 'slabs' | 'rough' | 'leg' | 'chair'
+
+const getCategoryFilter = (category: CategoryKey): { categoryId?: string; specType?: string; excludeCategoryId?: string } => {
+  if (category === 'rough') return { categoryId: 'rough_wood' }
+  if (category === 'leg') return { specType: 'Leg' }
+  if (category === 'chair') return { specType: 'Chair/Stool' }
+  if (category === 'all') return { excludeCategoryId: 'rough_wood' }
+  return { categoryId: 'SLABS' } // 'slabs'
+}
+// 👇👇👇 เอามาวางตรงนี้เลยจ้ะหลานชาย 👇👇👇
+const getDbCategory = (category: 'slabs' | 'rough'): string => {
+  if (category === 'rough') return 'rough_wood'
+  return 'SLABS' // default สำหรับ 'slabs'
+}
 
 // 🔹 ฟังก์ชันสร้าง Client แบบอ่าน Cookie (สำหรับระบบ User/Auth)
 async function createAuthClient() {
@@ -69,11 +82,11 @@ export async function getProducts(
   page: number,
   limit: number,
   filters: FilterState,
-  category: 'slabs' | 'rough' = 'slabs',
+  category: CategoryKey = 'all',
   discountFilter?: number[] | 'all' | null
 ) {
   const offset = page * limit
-  const targetCategory = getDbCategory(category)
+  const { categoryId, specType, excludeCategoryId } = getCategoryFilter(category)
 
   const LIST_SELECT_ACTIVE = "id,name,sku,barcode,price,image_url,status,specs,updated_at,created_at,category_id,stock(qty)"
 
@@ -85,10 +98,13 @@ export async function getProducts(
   let query = supabaseServer
     .from(TABLE)
     .select(LIST_SELECT_ACTIVE, { count: 'exact' })
-    .eq('category_id', targetCategory)
     .range(offset, offset + limit - 1)
     .order('status', { ascending: true })
     .order('updated_at', { ascending: false })
+
+  if (categoryId) query = query.eq('category_id', categoryId)
+  if (excludeCategoryId) query = query.neq('category_id', excludeCategoryId)
+  if (specType) query = query.eq('specs->>spec_type', specType)
 
   // --- Discount filter (server-side) ---
   if (Array.isArray(discountFilter) && discountFilter.length > 0) {
@@ -130,57 +146,48 @@ export async function getProducts(
 }
 
 // 1.3 ✅ ดึงค่า Min/Max สำหรับ Slider
-export async function getMinMax(col: string, category: 'slabs' | 'rough' = 'slabs') {
-  const targetCategory = getDbCategory(category)
+export async function getMinMax(col: string, category: CategoryKey = 'all') {
+  const { categoryId, specType, excludeCategoryId } = getCategoryFilter(category)
 
-  const { data: minData } = await supabaseServer
-    .from(TABLE)
-    .select(col)
-    .eq('category_id', targetCategory) // 🔥 กรองจาก category_id
-    .not(col, 'is', null)
-    .order(col, { ascending: true })
-    .limit(1)
-    .single()
+  let qMin = supabaseServer.from(TABLE).select(col).not(col, 'is', null).order(col, { ascending: true }).limit(1).single()
+  let qMax = supabaseServer.from(TABLE).select(col).not(col, 'is', null).order(col, { ascending: false }).limit(1).single()
+  if (categoryId) { qMin = (qMin as any).eq('category_id', categoryId); qMax = (qMax as any).eq('category_id', categoryId) }
+  if (excludeCategoryId) { qMin = (qMin as any).neq('category_id', excludeCategoryId); qMax = (qMax as any).neq('category_id', excludeCategoryId) }
+  if (specType) { qMin = (qMin as any).eq('specs->>spec_type', specType); qMax = (qMax as any).eq('specs->>spec_type', specType) }
 
-  const { data: maxData } = await supabaseServer
-    .from(TABLE)
-    .select(col)
-    .eq('category_id', targetCategory) // 🔥 กรองจาก category_id
-    .not(col, 'is', null)
-    .order(col, { ascending: false })
-    .limit(1)
-    .single()
+  const [{ data: minData }, { data: maxData }] = await Promise.all([qMin, qMax])
 
-  return { 
-    min: minData ? minData[col] : null, 
-    max: maxData ? maxData[col] : null 
+  return {
+    min: minData ? (minData as any)[col] : null,
+    max: maxData ? (maxData as any)[col] : null
   }
 }
 
 // 1.4 ✅ ดึงค่าสำหรับ Histogram
-export async function getRangeValues(col: string, category: 'slabs' | 'rough' = 'slabs') {
-  const targetCategory = getDbCategory(category)
+export async function getRangeValues(col: string, category: CategoryKey = 'all') {
+  const { categoryId, specType, excludeCategoryId } = getCategoryFilter(category)
 
-  const { data } = await supabaseServer
-    .from(TABLE)
-    .select(col)
-    .eq('category_id', targetCategory) // 🔥 กรองจาก category_id
-    .not(col, 'is', null)
-    .limit(2000)
+  let query = supabaseServer.from(TABLE).select(col).not(col, 'is', null).limit(2000)
+  if (categoryId) query = query.eq('category_id', categoryId)
+  if (excludeCategoryId) query = query.neq('category_id', excludeCategoryId)
+  if (specType) query = query.eq('specs->>spec_type', specType)
+
+  const { data } = await query
 
   if (!data) return []
   return data.map((r: any) => Number(r[col])).filter(n => Number.isFinite(n))
 }
 
 // 1.5 ✅ ดึงตัวเลือกสำหรับ Dropdown
-export async function getDistinctOptions(category: 'slabs' | 'rough' = 'slabs') {
-  const targetCategory = getDbCategory(category)
+export async function getDistinctOptions(category: CategoryKey = 'all') {
+  const { categoryId, specType, excludeCategoryId } = getCategoryFilter(category)
 
-  const { data } = await supabaseServer
-    .from(TABLE)
-    .select('specs')
-    .eq('category_id', targetCategory) // 🔥 กรองจาก category_id
-    .limit(3000)
+  let query = supabaseServer.from(TABLE).select('specs').limit(3000)
+  if (categoryId) query = query.eq('category_id', categoryId)
+  if (excludeCategoryId) query = query.neq('category_id', excludeCategoryId)
+  if (specType) query = query.eq('specs->>spec_type', specType)
+
+  const { data } = await query
 
   const sets = {
     type: new Set<string>(),
