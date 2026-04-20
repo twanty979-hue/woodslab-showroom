@@ -1,5 +1,5 @@
-'use client'
-
+"use client";
+import Image from 'next/image';
 import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 
@@ -134,7 +134,8 @@ export default function AboutPage() {
       <section className="py-32 px-6 bg-[#F7F4EF]">
         <FadeIn className="max-w-4xl mx-auto text-center">
           <Tag text="The Philosophy" />
-          <h2 className="font-serif text-[#1C1917] leading-snug mb-8"
+          {/* ✅ ลบ font-serif ออก */}
+          <h2 className="text-[#1C1917] leading-snug font-medium mb-8"
             style={{ fontSize: 'clamp(1.6rem, 3.5vw, 3.5rem)' }}>
             "เฟอร์นิเจอร์ที่อยู่เคียงข้างทุกช่วงเวลา<br className="hidden md:block" />
             <span className="text-zinc-400 font-light"> มอบความอบอุ่นในทุกสายสัมพันธ์"</span>
@@ -145,7 +146,8 @@ export default function AboutPage() {
             เราหวังว่าไม้แผ่นของเราจะสามารถส่งต่อคุณค่าจากรุ่นสู่รุ่น
           </p>
           <Divider />
-          <p className="text-[#C8935A] text-sm font-serif">
+          {/* ✅ ลบ font-serif ออก */}
+          <p className="text-[#C8935A] text-sm tracking-wider font-light">
             "making every piece of wood warm the world."
           </p>
         </FadeIn>
@@ -160,7 +162,8 @@ export default function AboutPage() {
               className="w-full h-full object-cover transition-transform duration-[2s] ease-out group-hover:scale-110" />
             <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors duration-700" />
             {/* number overlay */}
-            <div className="absolute bottom-6 right-6 font-serif text-white/20 text-8xl leading-none select-none pointer-events-none">
+            {/* ✅ ลบ font-serif ออก */}
+            <div className="absolute bottom-6 right-6 text-white/20 text-8xl font-light leading-none select-none pointer-events-none tracking-tighter">
               {String(i + 1).padStart(2, '0')}
             </div>
           </div>
@@ -169,12 +172,13 @@ export default function AboutPage() {
             <div className="p-10 md:p-20 lg:p-24 w-full">
               <FadeIn>
                 <Tag text={s.tag} />
-                <h3 className="font-serif text-[#1C1917] leading-snug mb-2"
+                {/* ✅ ลบ font-serif ออก */}
+                <h3 className="text-[#1C1917] font-medium leading-snug mb-2"
                   style={{ fontSize: 'clamp(1.5rem, 2.5vw, 2.8rem)' }}>
                   {s.title}
                 </h3>
                 <p className="text-xs text-zinc-500 mb-8 tracking-wider">{s.titleEn}</p>
-                <p className="text-zinc-700 leading-[1.95] text-base md:text-lg text-justify">
+                <p className="text-zinc-700 leading-[1.95] text-base md:text-lg text-justify font-light">
                   {s.desc}
                 </p>
               </FadeIn>
@@ -203,7 +207,8 @@ export default function AboutPage() {
                 { n: "40+", label: "พันธุ์ไม้หายาก", sub: "Rare Wood Species" },
               ].map((s, i) => (
                 <div key={i} className="px-8 py-10 text-center group hover:bg-white/4 transition-colors duration-500">
-                  <p className="font-serif text-3xl md:text-4xl text-[#C8935A] leading-none mb-3">{s.n}</p>
+                  {/* ✅ ลบ font-serif ออก */}
+                  <p className="text-3xl md:text-4xl font-medium tracking-tight text-[#C8935A] leading-none mb-3">{s.n}</p>
                   <p className="text-white text-base mb-1">{s.label}</p>
                   <p className="text-white/30 text-[9px] uppercase tracking-widest">{s.sub}</p>
                 </div>
@@ -240,12 +245,13 @@ export default function AboutPage() {
             <div className="lg:w-[320px] flex-shrink-0">
               <FadeIn>
                 <Tag text="Craftsmanship — Behind the Scenes" />
-                <h2 className="font-serif text-[#1C1917] leading-snug mb-6"
+                {/* ✅ ลบ font-serif ออก */}
+                <h2 className="text-[#1C1917] font-medium leading-snug mb-6"
                   style={{ fontSize: 'clamp(1.6rem, 2.5vw, 2.8rem)' }}>
                   กระบวนการ<br />
                   <span className="font-light text-zinc-400">สร้างสรรค์</span>
                 </h2>
-                <p className="text-zinc-700 text-base leading-loose mb-8">
+                <p className="text-zinc-700 text-base leading-loose mb-8 font-light">
                   ด้วยคลังสินค้า 9,000 ตร.ม. สต็อกกว่า 10,000 ชิ้นจากซัพพลายเออร์ชั้นนำ
                   ในยุโรป แอฟริกา อเมริกา และเอเชียตะวันออกเฉียงใต้
                 </p>
@@ -260,14 +266,16 @@ export default function AboutPage() {
                   <FadeIn key={i} delay={i * 60}>
                     <div className="flex gap-6 md:gap-10 py-7 border-b border-[#E8E2D9] group hover:border-[#C8935A] transition-colors duration-500 last:border-0">
                       <div className="flex-shrink-0 pt-1">
-                        <p className="font-serif text-2xl text-[#DDD6C9] group-hover:text-[#C8935A] transition-colors duration-500 leading-none w-10 text-right">{p.n}</p>
+                        {/* ✅ ลบ font-serif ออก */}
+                        <p className="text-2xl font-light tracking-widest text-[#DDD6C9] group-hover:text-[#C8935A] transition-colors duration-500 leading-none w-10 text-right">{p.n}</p>
                       </div>
                       <div className="flex-1">
                         <div className="flex items-baseline gap-3 mb-2">
-                          <p className="font-serif text-lg text-[#1C1917]">{p.th}</p>
+                          {/* ✅ ลบ font-serif ออก */}
+                          <p className="text-lg font-medium text-[#1C1917]">{p.th}</p>
                           <p className="text-[11px] text-[#C8935A] uppercase tracking-wider hidden sm:block">{p.en}</p>
                         </div>
-                        <p className="text-zinc-700 text-base md:text-lg leading-relaxed">{p.desc}</p>
+                        <p className="text-zinc-700 font-light text-base md:text-lg leading-relaxed">{p.desc}</p>
                       </div>
                     </div>
                   </FadeIn>
@@ -285,12 +293,13 @@ export default function AboutPage() {
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16">
               <div>
                 <Tag text="Global Material Heritage" />
-                <h2 className="font-serif text-white" style={{ fontSize: 'clamp(1.8rem, 3vw, 3rem)' }}>
+                {/* ✅ ลบ font-serif ออก */}
+                <h2 className="text-white font-medium" style={{ fontSize: 'clamp(1.8rem, 3vw, 3rem)' }}>
                   แหล่งไม้หายาก<br />
                   <span className="text-[#C8935A]">จากทั่วโลก</span>
                 </h2>
               </div>
-              <p className="text-white/60 text-sm max-w-xs leading-loose">
+              <p className="text-white/60 font-light text-sm max-w-xs leading-loose">
                 เราคัดสรรพันธุ์ไม้มากกว่า 40 ชนิด จาก 4 ภูมิภาคหลักของโลก
               </p>
             </div>
@@ -311,7 +320,8 @@ export default function AboutPage() {
                       className="w-full h-full object-cover opacity-30 group-hover:opacity-50 group-hover:scale-110 transition-all duration-[1.5s]" />
                   </div>
                   <div className="p-6">
-                    <p className="font-serif text-white text-xl mb-0.5">{r.region}</p>
+                    {/* ✅ ลบ font-serif ออก */}
+                    <p className="text-white font-medium tracking-wide text-xl mb-0.5">{r.region}</p>
                     <p className="text-[#C8935A] text-[11px] uppercase tracking-[0.3em] mb-5">{r.en}</p>
                     <ul className="space-y-2">
                       {r.woods.map(w => (
@@ -334,7 +344,8 @@ export default function AboutPage() {
         <div className="max-w-5xl mx-auto">
           <FadeIn className="text-center mb-16">
             <Tag text="Brand Events — Our Global Presence" />
-            <h2 className="font-serif text-[#1C1917] text-2xl md:text-4xl">เราพบกันที่เวทีโลก</h2>
+            {/* ✅ ลบ font-serif ออก */}
+            <h2 className="text-[#1C1917] font-medium text-2xl md:text-4xl">เราพบกันที่เวทีโลก</h2>
           </FadeIn>
           <div className="relative">
             {/* timeline line */}
@@ -344,7 +355,8 @@ export default function AboutPage() {
                 <FadeIn key={i} delay={i * 100}>
                   <div className={`flex flex-col md:flex-row gap-6 items-center ${i % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'}`}>
                     <div className={`w-full md:w-[45%] ${i % 2 === 0 ? 'md:text-right' : 'md:text-left'}`}>
-                      <p className="font-serif text-4xl text-[#C8935A]">{e.y}</p>
+                      {/* ✅ ลบ font-serif ออก */}
+                      <p className="text-4xl font-light tracking-wider text-[#C8935A]">{e.y}</p>
                       <p className="font-medium text-[#1C1917] text-base mt-1 whitespace-pre-line leading-snug">{e.e}</p>
                       <p className="text-sm text-zinc-500 tracking-widest uppercase mt-1">{e.city}</p>
                     </div>
@@ -366,7 +378,8 @@ export default function AboutPage() {
         <div className="relative z-10 max-w-3xl mx-auto text-center text-white">
           <FadeIn>
             <Tag text="Wabi-Sabi — The Beauty of Imperfection" />
-            <h2 className="font-serif text-white leading-snug mb-8"
+            {/* ✅ ลบ font-serif ออก */}
+            <h2 className="text-white leading-snug mb-8 font-medium"
               style={{ fontSize: 'clamp(1.8rem, 4vw, 4.5rem)' }}>
               ความไม่สมบูรณ์<br />
               <span className="text-[#C8935A]">คือความงามที่แท้จริง</span>
@@ -375,7 +388,8 @@ export default function AboutPage() {
               ปมไม้ รอยแตก ลายธรรมชาติ — สิ่งเหล่านี้คือเรื่องราวที่ต้นไม้เขียนด้วยตัวเอง
               ตลอดร้อยปีแห่งการเติบโต ทุกร่องรอยคือหลักฐานว่ามันเคยมีชีวิตอยู่จริง
             </p>
-            <p className="text-[#C8935A] font-serif text-lg mt-6">
+            {/* ✅ ลบ font-serif ออก */}
+            <p className="text-[#C8935A] tracking-wide text-lg mt-6 font-light">
               "ไม้แผ่นก็เหมือนมนุษย์ ต่างมีบุคลิกเฉพาะตัว<br />ไม่มีสองชิ้นที่เหมือนกัน"
             </p>
           </FadeIn>
@@ -386,10 +400,11 @@ export default function AboutPage() {
       <section className="py-32 px-6 bg-[#F7F4EF] text-center">
         <FadeIn>
           <Tag text="Start Your Journey" />
-          <h2 className="font-serif text-[#1C1917] mb-4" style={{ fontSize: 'clamp(1.8rem, 3.5vw, 3.5rem)' }}>
+          {/* ✅ ลบ font-serif ออก */}
+          <h2 className="text-[#1C1917] font-medium mb-4" style={{ fontSize: 'clamp(1.8rem, 3.5vw, 3.5rem)' }}>
             พร้อมค้นหาไม้แผ่นของคุณหรือยัง?
           </h2>
-          <p className="text-zinc-700 mb-12 max-w-lg mx-auto leading-relaxed text-base md:text-lg">
+          <p className="text-zinc-700 mb-12 max-w-lg mx-auto leading-relaxed text-base md:text-lg font-light">
             สำรวจคอลเลกชันไม้แผ่นหายากของเรา แต่ละชิ้นรอคอยการบอกเล่าเรื่องราวของมัน
             ในบ้านของคุณ
           </p>
@@ -410,7 +425,8 @@ export default function AboutPage() {
 
       {/* ══ FOOTER ══ */}
       <footer className="py-16 bg-[#0a0a0a] text-zinc-500 border-t border-white/5 text-center">
-        <p className="font-serif text-white/20 text-4xl tracking-[0.4em] uppercase mb-6">WOODSLABS</p>
+        {/* ✅ ลบ font-serif ออก */}
+        <p className="text-white/20 text-4xl font-light tracking-[0.4em] uppercase mb-6">WOODSLABS</p>
         <p className="text-[10px] uppercase tracking-widest mb-1">© 2026 Woodslabs Industry Co., Ltd. — BY WOODDEN™</p>
         <p className="text-[9px] opacity-40 normal-case mt-1">"making every piece of wood warm the world."</p>
       </footer>

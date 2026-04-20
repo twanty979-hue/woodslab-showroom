@@ -152,7 +152,8 @@ export default function FranchiseePage() {
       <section className="py-32 px-6 bg-[#F7F4EF]">
         <FadeIn className="max-w-4xl mx-auto text-center">
           <Tag text="Why Partner With Us" />
-          <h2 className="font-serif text-[#1C1917] leading-snug mb-8"
+          {/* ✅ ลบ font-serif เพิ่ม font-medium */}
+          <h2 className="text-[#1C1917] font-medium leading-snug mb-8"
             style={{ fontSize: 'clamp(1.6rem, 3.5vw, 3.5rem)' }}>
             "เติบโตไปพร้อมกับเรา<br className="hidden md:block" />
             <span className="text-zinc-400 font-light"> ภายใต้แบรนด์ที่ตลาดเชื่อถือ"</span>
@@ -162,7 +163,7 @@ export default function FranchiseePage() {
             พร้อมระบบสนับสนุนที่ครอบคลุมทุกมิติ ตั้งแต่วันแรกจนถึงวันที่คุณเติบโตอย่างยั่งยืน
           </p>
           <div className="w-12 h-[1px] bg-[#C8935A] my-10 opacity-60 mx-auto" />
-          <p className="text-[#C8935A] text-sm font-serif italic">
+          <p className="text-[#C8935A] text-sm font-light tracking-wide italic">
             "สร้างพื้นที่ที่กลมกลืนระหว่างคนและธรรมชาติ"
           </p>
         </FadeIn>
@@ -183,7 +184,8 @@ export default function FranchiseePage() {
                 }} 
               />
               <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors duration-700" />
-              <div className="absolute bottom-6 right-6 font-serif text-white/15 text-8xl leading-none select-none pointer-events-none">
+              {/* ✅ ลบ font-serif เพิ่ม font-light เพื่อความมินิมอล */}
+              <div className="absolute bottom-6 right-6 text-white/15 text-8xl font-light leading-none select-none pointer-events-none tracking-tighter">
                 {a.n?.replace("0", "").split("—")[0].trim() || String(i + 1).padStart(2, '0')}
               </div>
             </div>
@@ -192,12 +194,13 @@ export default function FranchiseePage() {
               <div className="p-10 md:p-20 lg:p-24 w-full">
                 <FadeIn>
                   <Tag text={a.tag} />
-                  <h3 className="font-serif text-[#1C1917] leading-snug mb-2"
+                  {/* ✅ ลบ font-serif */}
+                  <h3 className="text-[#1C1917] font-medium leading-snug mb-2"
                     style={{ fontSize: 'clamp(1.5rem, 2.5vw, 2.8rem)' }}>
                     {a.title}
                   </h3>
-                  <p className="text-xs text-zinc-400 mb-8 tracking-wider">{a.titleEn}</p>
-                  <p className="text-zinc-700 leading-[1.95] text-base md:text-lg text-justify">
+                  <p className="text-xs text-zinc-400 mb-8 tracking-wider font-light">{a.titleEn}</p>
+                  <p className="text-zinc-700 font-light leading-[1.95] text-base md:text-lg text-justify">
                     {a.desc}
                   </p>
                 </FadeIn>
@@ -223,7 +226,8 @@ export default function FranchiseePage() {
           <div className="absolute inset-0 flex items-end justify-center pb-12">
             <FadeIn className="text-center">
               <Tag text="Support System — Exclusive Services" />
-              <h2 className="font-serif text-white" style={{ fontSize: 'clamp(1.8rem, 3.5vw, 3.5rem)' }}>
+              {/* ✅ ลบ font-serif */}
+              <h2 className="text-white font-medium" style={{ fontSize: 'clamp(1.8rem, 3.5vw, 3.5rem)' }}>
                 สิทธิประโยชน์<span className="text-[#C8935A]">เฉพาะพาร์ทเนอร์</span>
               </h2>
             </FadeIn>
@@ -236,11 +240,13 @@ export default function FranchiseePage() {
               <FadeIn key={i} delay={i * 60}>
                 <div className="group bg-[#1C1917] p-8 md:p-10 hover:bg-white/4 transition-colors duration-500 cursor-default">
                   <div className="flex items-start gap-5">
-                    <p className="font-serif text-2xl text-white/10 group-hover:text-[#C8935A] transition-colors duration-500 leading-none flex-shrink-0 pt-0.5">{s.n}</p>
+                    {/* ✅ ลบ font-serif เพิ่ม font-light */}
+                    <p className="text-2xl font-light tracking-widest text-white/10 group-hover:text-[#C8935A] transition-colors duration-500 leading-none flex-shrink-0 pt-0.5">{s.n}</p>
                     <div>
-                      <p className="font-serif text-white text-lg mb-1 group-hover:text-[#C8935A] transition-colors duration-500">{s.th}</p>
+                      {/* ✅ ลบ font-serif */}
+                      <p className="text-white font-medium text-lg mb-1 group-hover:text-[#C8935A] transition-colors duration-500">{s.th}</p>
                       <p className="text-[#C8935A] text-[8px] uppercase tracking-[0.4em] mb-3 opacity-60">{s.en}</p>
-                      <p className="text-white/50 text-base leading-relaxed group-hover:text-white/70 transition-colors duration-500">{s.desc}</p>
+                      <p className="text-white/50 font-light text-base leading-relaxed group-hover:text-white/70 transition-colors duration-500">{s.desc}</p>
                     </div>
                   </div>
                 </div>
@@ -257,16 +263,17 @@ export default function FranchiseePage() {
         <div className="relative z-10 max-w-3xl mx-auto text-center text-white">
           <FadeIn>
             <Tag text="Opportunity — Investment & Growth" />
-            <h2 className="font-serif text-white leading-snug mb-10"
+            {/* ✅ ลบ font-serif */}
+            <h2 className="text-white font-medium leading-snug mb-10"
               style={{ fontSize: 'clamp(1.8rem, 4vw, 4rem)' }}>
               โอกาสลงทุน<br />
               <span className="text-[#C8935A]">ที่เติบโตไปด้วยกัน</span>
             </h2>
-            <p className="text-white/70 text-base md:text-lg max-w-xl mx-auto leading-loose mb-4">
+            <p className="text-white/70 font-light text-base md:text-lg max-w-xl mx-auto leading-loose mb-4">
               WOODSLABS เติบโตจากรากฐานเฟอร์นิเจอร์ไม้เนื้อแข็งสู่แบรนด์ระดับนานาชาติ
               เราพร้อมร่วมมือกับเจ้าของแบรนด์ นักออกแบบ และโชว์รูมผ่านรูปแบบความร่วมมือที่ยืดหยุ่น
             </p>
-            <p className="text-white/70 text-base md:text-lg max-w-xl mx-auto leading-loose mb-14">
+            <p className="text-white/70 font-light text-base md:text-lg max-w-xl mx-auto leading-loose mb-14">
               เราสนับสนุนแฟรนไชส์แบบเฉพาะตัว พร้อมโซลูชันที่ออกแบบเพื่อคุณโดยเฉพาะ
               ร่วมสร้างพื้นที่ที่ผสมผสานความเป็นมนุษย์และธรรมชาติในยุคใหม่
             </p>
@@ -284,7 +291,8 @@ export default function FranchiseePage() {
         <div className="max-w-7xl mx-auto">
           <FadeIn className="text-center mb-20">
             <Tag text="The Process — Franchise Roadmap" />
-            <h2 className="font-serif text-[#1C1917]" style={{ fontSize: 'clamp(1.8rem, 3vw, 3rem)' }}>
+            {/* ✅ ลบ font-serif */}
+            <h2 className="text-[#1C1917] font-medium" style={{ fontSize: 'clamp(1.8rem, 3vw, 3rem)' }}>
               เส้นทางสู่การเป็นพาร์ทเนอร์
             </h2>
           </FadeIn>
@@ -293,11 +301,13 @@ export default function FranchiseePage() {
             {STEPS.map((s, i) => (
               <FadeIn key={i} delay={i * 80}>
                 <div className="group bg-[#F7F4EF] hover:bg-white transition-colors duration-500 p-8 md:p-10 text-center cursor-default relative overflow-hidden">
-                  <p className="font-serif text-5xl text-[#E8E2D9] group-hover:text-[#C8935A]/20 transition-colors duration-500 absolute top-4 right-4 leading-none select-none">
+                  {/* ✅ ลบ font-serif เพิ่ม font-light */}
+                  <p className="text-5xl font-light tracking-tighter text-[#E8E2D9] group-hover:text-[#C8935A]/20 transition-colors duration-500 absolute top-4 right-4 leading-none select-none">
                     {s.n}
                   </p>
                   <div className="relative z-10 pt-8">
-                    <p className="font-serif text-[#1C1917] text-lg mb-1">{s.th}</p>
+                    {/* ✅ ลบ font-serif */}
+                    <p className="text-[#1C1917] font-medium text-lg mb-1">{s.th}</p>
                     <p className="text-[#C8935A] text-[8px] uppercase tracking-[0.4em]">{s.en}</p>
                     <div className="w-6 h-[1px] bg-[#C8935A] mx-auto mt-5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                   </div>
@@ -312,21 +322,22 @@ export default function FranchiseePage() {
       <section className="py-32 px-6 bg-white text-center border-t border-[#E8E2D9]">
         <FadeIn>
           <Tag text="Start Your Journey" />
-          <h2 className="font-serif text-[#1C1917] mb-4" style={{ fontSize: 'clamp(1.8rem, 3.5vw, 3.5rem)' }}>
+          {/* ✅ ลบ font-serif */}
+          <h2 className="text-[#1C1917] font-medium mb-4" style={{ fontSize: 'clamp(1.8rem, 3.5vw, 3.5rem)' }}>
             พร้อมเริ่มต้นกับเราหรือยัง?
           </h2>
-          <p className="text-zinc-700 mb-12 max-w-lg mx-auto leading-relaxed text-base md:text-lg">
+          <p className="text-zinc-700 mb-12 max-w-lg mx-auto leading-relaxed text-base md:text-lg font-light">
             ส่งข้อความมาหาเราวันนี้ ทีมงานของเราพร้อมให้คำปรึกษาและตอบทุกคำถาม
             เพื่อช่วยให้คุณตัดสินใจได้อย่างมั่นใจ
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link href="/contact"
-              className="group relative inline-flex items-center gap-3 px-10 py-4 border border-[#1C1917]/25 text-[10px] font-bold uppercase tracking-[0.35em] overflow-hidden transition-all duration-500 hover:border-[#C8935A]">
+              className="group relative inline-flex items-center gap-3 px-10 py-4 border border-[#1C1917]/25 text-[10px] font-bold uppercase tracking-[0.25em] overflow-hidden transition-all duration-500 hover:border-[#C8935A]">
               <span className="absolute inset-0 w-0 group-hover:w-full bg-[#C8935A] transition-all duration-500 ease-out" />
               <span className="relative z-10 group-hover:text-white transition-colors duration-500">ติดต่อเรา</span>
             </Link>
             <Link href="/about"
-              className="group relative inline-flex items-center gap-3 px-10 py-4 border border-[#1C1917]/25 text-[10px] font-bold uppercase tracking-[0.35em] overflow-hidden transition-all duration-500 hover:border-[#C8935A]">
+              className="group relative inline-flex items-center gap-3 px-10 py-4 border border-[#1C1917]/25 text-[10px] font-bold uppercase tracking-[0.25em] overflow-hidden transition-all duration-500 hover:border-[#C8935A]">
               <span className="absolute inset-0 w-0 group-hover:w-full bg-[#C8935A] transition-all duration-500 ease-out" />
               <span className="relative z-10 group-hover:text-white transition-colors duration-500">เรียนรู้เพิ่มเติม</span>
             </Link>
@@ -336,9 +347,10 @@ export default function FranchiseePage() {
 
       {/* ══ FOOTER ══ */}
       <footer className="py-16 bg-[#0a0a0a] text-zinc-500 border-t border-white/5 text-center">
-        <p className="font-serif text-white/20 text-4xl tracking-[0.4em] uppercase mb-6">WOODSLABS</p>
+        {/* ✅ ลบ font-serif เพิ่ม font-light */}
+        <p className="text-white/20 text-4xl font-light tracking-[0.4em] uppercase mb-6">WOODSLABS</p>
         <p className="text-[10px] uppercase tracking-widest mb-1">© 2026 Woodslabs Industry Co., Ltd. — BY WOODDEN™</p>
-        <p className="text-[9px] opacity-40 normal-case mt-1">"making every piece of wood warm the world."</p>
+        <p className="text-[9px] opacity-40 normal-case mt-1 font-light">"making every piece of wood warm the world."</p>
       </footer>
 
     </div>

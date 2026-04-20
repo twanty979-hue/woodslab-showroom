@@ -52,17 +52,17 @@ const HERO = [
 ];
 
 const SOLID = [
-  { th: "วอลนัทดำ", en: "North American Black Walnut", img: "https://pub-258bd10e7e8c4a7690a74c54cfbdef93.r2.dev/original/1775725287327-673.webp", note: "0.66–0.69 g/cm³" },
-  { th: "สักพม่า", en: "Burmese Teak", img: "https://pub-258bd10e7e8c4a7690a74c54cfbdef93.r2.dev/original/1775725297620-505.webp", note: "0.65–0.70 g/cm³" },
-  { th: "จามจุรี", en: "South American Rain Tree", img: "https://pub-258bd10e7e8c4a7690a74c54cfbdef93.r2.dev/original/1775725304427-139.webp", note: "0.64 g/cm³" },
-  { th: "แอชอเมริกัน", en: "American Ash", img: "https://pub-258bd10e7e8c4a7690a74c54cfbdef93.r2.dev/original/1775725319640-116.webp", note: "0.60–0.72 g/cm³" },
+  { th: "", en: "", img: "https://pub-258bd10e7e8c4a7690a74c54cfbdef93.r2.dev/original/1775725287327-673.webp" },
+  { th: "", en: "", img: "https://pub-258bd10e7e8c4a7690a74c54cfbdef93.r2.dev/original/1775725297620-505.webp"},
+  { th: "", en: "", img: "https://pub-258bd10e7e8c4a7690a74c54cfbdef93.r2.dev/original/1775725304427-139.webp" },
+  { th: "", en: "", img: "https://pub-258bd10e7e8c4a7690a74c54cfbdef93.r2.dev/original/1775725319640-116.webp" },
 ];
 
 const RESIN = [
-  { th: "วอลนัทเรซิน", en: "Walnut Resin", img: "https://pub-258bd10e7e8c4a7690a74c54cfbdef93.r2.dev/original/1775724495973-851.webp" },
-  { th: "ป็อปลาร์เรซิน", en: "Poplar Resin", img: "https://pub-258bd10e7e8c4a7690a74c54cfbdef93.r2.dev/original/1775725984128-23.webp" },
-  { th: "ไม้มะกอก", en: "Olive Wood", img: "https://pub-258bd10e7e8c4a7690a74c54cfbdef93.r2.dev/original/1775726859141-273.webp" },
-  { th: "โรสวูดแอฟริกา", en: "African Rosewood", img: "https://pub-258bd10e7e8c4a7690a74c54cfbdef93.r2.dev/original/1775726887638-45.webp" },
+  { th: "", en: "", img: "https://pub-258bd10e7e8c4a7690a74c54cfbdef93.r2.dev/woodslabs/WS-1776669183301-182.webp" },
+  { th: "", en: "", img: "https://pub-258bd10e7e8c4a7690a74c54cfbdef93.r2.dev/woodslabs/WS-1776669237113-821.webp" },
+  { th: "", en: "", img: "https://pub-258bd10e7e8c4a7690a74c54cfbdef93.r2.dev/original/1775726859141-273.webp" },
+  { th: "", en: "", img: "https://pub-258bd10e7e8c4a7690a74c54cfbdef93.r2.dev/woodslabs/WS-1776669257970-901.webp" },
 ];
 
 const STEPS = [
@@ -212,7 +212,7 @@ export default function HomePage() {
                 {[
                   { n: "256", l: "ช่างฝีมือ" },
                   { n: "9,000", l: "ตร.ม. คลังสินค้า" },
-                  { n: "10,000+", l: "แผ่นไม้ในสต็อก" },
+                  { n: "1,000+", l: "แผ่นไม้ในสต็อก" },
                   { n: "<12%", l: "ความชื้นมาตรฐาน" },
                 ].map(s => (
                   <div key={s.l} className="text-center">
@@ -287,7 +287,7 @@ export default function HomePage() {
                     <Image src={w.img} alt={w.en} fill unoptimized className="object-cover transition-transform duration-[1.8s] group-hover:scale-110" />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
                     <div className="absolute bottom-0 left-0 right-0 p-5 translate-y-2 group-hover:translate-y-0 transition-transform duration-500">
-                      <p className="text-[9px] text-white/60 uppercase tracking-widest mb-1">Epoxy & Wood</p>
+                      <p className="text-[9px] text-white/60 uppercase tracking-widest mb-1">ZENSLABS</p>
                       <p className="text-white font-serif text-xl leading-tight">{w.th}</p>
                       <p className="text-white/60 text-[10px] mt-0.5">{w.en}</p>
                     </div>
@@ -350,22 +350,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ══════════════════════════════
-          SPECIES MARQUEE
-      ══════════════════════════════ */}
-      <section className="py-16 bg-[#F0EBE3] border-y border-[#DDD6C9] overflow-hidden">
-        <FadeIn>
-          <p className="text-center text-[9px] uppercase tracking-[0.5em] text-[#C8935A] mb-6">Our Material Heritage — Global Collection</p>
-        </FadeIn>
-        <div className="flex gap-8 whitespace-nowrap" style={{ animation: 'marquee 28s linear infinite' }}>
-          {[...SPECIES, ...SPECIES].map((s, i) => (
-            <span key={i} className="text-[#8B7355] text-xs uppercase tracking-widest font-light flex items-center gap-8">
-              {s} <span className="text-[#C8935A]">◆</span>
-            </span>
-          ))}
-        </div>
-        <style>{`@keyframes marquee { from{transform:translateX(0)} to{transform:translateX(-50%)} }`}</style>
-      </section>
 
       {/* ══════════════════════════════
           MANUFACTURING PROCESS
@@ -399,7 +383,7 @@ export default function HomePage() {
           PARALLAX — Possibilities
       ══════════════════════════════ */}
       <section className="relative py-52 px-6 bg-fixed bg-cover bg-center"
-        style={{ backgroundImage: `url("https://pub-258bd10e7e8c4a7690a74c54cfbdef93.r2.dev/original/1775726986607-180.webp")` }}>
+        style={{ backgroundImage: `url("https://pub-258bd10e7e8c4a7690a74c54cfbdef93.r2.dev/original/1775724369710-636.webp")` }}>
         <div className="absolute inset-0 bg-black/55" />
         <div className="relative z-10 max-w-3xl mx-auto text-center text-white">
           <FadeIn>
@@ -560,40 +544,12 @@ export default function HomePage() {
       </section>
 
       {/* ══════════════════════════════
-          CTA — Visit Us
-      ══════════════════════════════ */}
-      <section className="bg-[#0d0b09] text-[#DCD3C8] py-32 px-6">
-        <div className="max-w-6xl mx-auto flex flex-col lg:flex-row items-center gap-16">
-          <div className="w-full lg:w-1/2 space-y-8">
-            <Tag text="Visit Us — Experience the Texture" />
-            <h2 className="font-serif text-white leading-snug" style={{ fontSize: 'clamp(2rem, 4vw, 4rem)' }}>
-              สัมผัส<br />
-              <span className="text-[#C8935A]">ความจริงของไม้</span>
-            </h2>
-            <div className="border-l border-white/10 pl-6 space-y-3 text-zinc-400 font-light text-sm leading-loose">
-              <p>🏢 ชั้น 13 อาคาร WanNeng, No. 10 Chuangye Road<br />Fuzhou High-tech Zone, China</p>
-              <p>📍 WOODDEN SHOWROOM<br />ชั้น 2 Design Village, ถ.นวมินทร์ กรุงเทพฯ</p>
-            </div>
-            <div className="flex flex-wrap gap-3 pt-4">
-              <Btn href="/contact" label="นัดเข้าเยี่ยมชม" dark />
-              <Btn href="/woodslab" label="ดูสินค้าออนไลน์" dark />
-            </div>
-          </div>
-          <div className="w-full lg:w-1/2 h-[440px] relative overflow-hidden group">
-            <img src="https://pub-258bd10e7e8c4a7690a74c54cfbdef93.r2.dev/original/1775724369710-636.webp"
-              alt="Showroom" className="w-full h-full object-cover transition-transform duration-[1.8s] group-hover:scale-110 opacity-65 group-hover:opacity-90" />
-            <div className="absolute inset-0 border border-white/8 m-5 pointer-events-none" />
-          </div>
-        </div>
-      </section>
-
-      {/* ══════════════════════════════
           FOOTER
       ══════════════════════════════ */}
       <footer className="bg-[#070605] text-zinc-500 py-12 border-t border-white/5 text-center text-[10px] tracking-widest uppercase">
         <div className="flex justify-center gap-8 mb-8">
           <a href="https://line.me/R/ti/p/@doy2013q?oat__id=35314" target="_blank" rel="noopener noreferrer" className="hover:text-[#C8935A] transition-colors duration-300 p-2"><FaLine className="w-5 h-5" /></a>
-          <a href="https://www.facebook.com/wooddenthailand" target="_blank" rel="noopener noreferrer" className="hover:text-[#C8935A] transition-colors duration-300 p-2"><FaFacebookF className="w-5 h-5" /></a>
+          <a href="https://www.facebook.com/zenslab.th/" target="_blank" rel="noopener noreferrer" className="hover:text-[#C8935A] transition-colors duration-300 p-2"><FaFacebookF className="w-5 h-5" /></a>
           <a href="tel:+66626670009" className="hover:text-[#C8935A] transition-colors duration-300 p-2"><FaPhone className="w-5 h-5" /></a>
         </div>
         <p className="mb-1">© 2026 Woodslabs Industry Co., Ltd. — BY WOODDEN™</p>

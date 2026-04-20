@@ -33,7 +33,9 @@ const IconPackage = ({ className }: { className?: string }) => (<svg xmlns="http
 // --- NAVLINK ---
 const NavLink = ({ href, children, className }: { href: string, children: React.ReactNode, className: string }) => (
   <Link href={href} className="relative group py-3">
-    <span className={`text-[10px] md:text-[11px] font-bold uppercase tracking-[0.25em] group-hover:text-[#d4a373] ${className}`}>
+    {/* ✅ ยายแก้ขนาดจาก text-[10px] md:text-[11px] ให้กลายเป็น text-xs md:text-sm (ใหญ่ขึ้นกำลังสวย) */}
+    {/* ✅ และปรับ tracking ลงนิดนึงให้พอดีกับตัวอักษรที่ใหญ่ขึ้นจ้ะ */}
+    <span className={`font-sans text-xs md:text-sm font-medium uppercase tracking-[0.15em] group-hover:text-[#d4a373] ${className}`}>
       {children}
     </span>
     <span className="absolute bottom-0 left-1/2 w-0 h-[1px] bg-[#d4a373] transition-all duration-300 ease-out group-hover:w-full group-hover:left-0"></span>
@@ -172,9 +174,9 @@ export default function Navbar() {
                   alt="Woodslabs Logo" 
                   className={`object-contain ${commonTransition} ${useWhiteText ? 'h-10 md:h-12 brightness-0 invert' : 'h-7 md:h-9'}`}
                 />
-                <span className={`font-serif font-bold uppercase tracking-widest text-lg md:text-xl ${commonTransition} ${mainTextColor} whitespace-nowrap`}>
-                  WOODSLABS
-                </span>
+                <span className={`font-sans font-medium uppercase tracking-[0.2em] text-xl md:text-2xl ${commonTransition} ${mainTextColor} whitespace-nowrap`}>
+  ZENSLABS
+</span>
              </Link>
           </div>
           
@@ -271,12 +273,13 @@ export default function Navbar() {
              <span className="text-[15vw] font-serif font-bold text-black uppercase tracking-widest leading-none">Woods</span>
           </div>
           <div className="flex flex-col gap-8 text-center relative z-10">
-              <Link href="/" className="text-4xl font-serif text-[#1C1917] hover:text-[#d4a373] transition-colors italic">Home</Link>
-              <Link href="/about" className="text-4xl font-serif text-[#1C1917] hover:text-[#d4a373] transition-colors italic">About</Link>
-              <Link href="/woodslab" className="text-4xl font-serif text-[#1C1917] hover:text-[#d4a373] transition-colors italic">Collection</Link>
-              <Link href="/franchisee" className="text-4xl font-serif text-[#1C1917] hover:text-[#d4a373] transition-colors italic">Franchisee</Link>
-              <Link href="/contact" className="text-4xl font-serif text-[#1C1917] hover:text-[#d4a373] transition-colors italic">Contact</Link>
-          </div>
+    {/* ✅ ยายเปลี่ยนเป็น font-sans และเพิ่ม tracking ให้ตัวอักษรดูโปร่งๆ เข้ากับแบรนด์จ้ะ */}
+    <Link href="/" className="text-4xl font-sans font-light uppercase tracking-[0.1em] text-[#1C1917] hover:text-[#d4a373] transition-colors">Home</Link>
+    <Link href="/about" className="text-4xl font-sans font-light uppercase tracking-[0.1em] text-[#1C1917] hover:text-[#d4a373] transition-colors">About</Link>
+    <Link href="/woodslab" className="text-4xl font-sans font-light uppercase tracking-[0.1em] text-[#1C1917] hover:text-[#d4a373] transition-colors">Collection</Link>
+    <Link href="/franchisee" className="text-4xl font-sans font-light uppercase tracking-[0.1em] text-[#1C1917] hover:text-[#d4a373] transition-colors">Franchisee</Link>
+    <Link href="/contact" className="text-4xl font-sans font-light uppercase tracking-[0.1em] text-[#1C1917] hover:text-[#d4a373] transition-colors">Contact</Link>
+</div>
           
           {user ? (
              <div className="flex flex-col items-center gap-6 mt-12 border-t border-zinc-200 pt-12 w-48">
