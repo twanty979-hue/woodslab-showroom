@@ -136,16 +136,14 @@ export default function HomePage() {
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
 
         {/* content */}
-<div className="absolute inset-0 flex flex-col items-center justify-center text-center px-6">
-  <FadeIn>
-    {/* ถ้ามีหัวข้อหรือ Tag อยู่ตรงนี้ด้วย มันก็จะกลางไปด้วยกันครับ */}
-    
-    <div className="flex flex-wrap justify-center gap-3 mt-8">
-      <Btn href="/woodslab" label="Wood Slab" dark />
-      <Btn href="/woodslab?cat=rough" label="Raw Wood " dark />
-    </div>
-  </FadeIn>
-</div>
+        <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-6">
+          <FadeIn>
+            <div className="flex flex-wrap justify-center gap-3 mt-8">
+              <Btn href="/woodslab" label="Wood Slab" dark />
+              <Btn href="/woodslab?cat=rough" label="Raw Wood " dark />
+            </div>
+          </FadeIn>
+        </div>
 
         {/* dot nav */}
         <div className="absolute bottom-7 left-1/2 -translate-x-1/2 flex gap-2 z-10">
@@ -177,6 +175,7 @@ export default function HomePage() {
                 </div>
                 {/* badge */}
                 <div className="absolute -bottom-8 -right-6 lg:-right-10 w-36 h-36 rounded-full bg-[#C8935A] flex flex-col items-center justify-center text-white shadow-2xl">
+                  {/* ตัวเลขใส่ font-serif หรูหรา */}
                   <span className="font-serif text-3xl leading-none">40+</span>
                   <span className="text-[9px] uppercase tracking-widest mt-1 text-white/80">พันธุ์ไม้หายาก</span>
                 </div>
@@ -190,11 +189,12 @@ export default function HomePage() {
           <div className="w-full lg:w-1/2">
             <FadeIn delay={150}>
               <Tag text="Who We Are — Our Identity" />
+              {/* ใส่ font-serif ตามรูป image_ec0563.png */}
               <h2 className="font-serif text-[#1C1917] leading-snug mb-8" style={{ fontSize: 'clamp(1.9rem, 3.5vw, 3.5rem)' }}>
                 เราคือใคร<br />
                 <span className="font-light text-zinc-400" style={{ fontSize: 'clamp(1rem, 2vw, 1.4rem)', letterSpacing: '0.05em' }}>ตัวตนและจิตวิญญาณของเรา</span>
               </h2>
-              <div className="border-l-2 border-[#C8935A]/40 pl-7 space-y-5 text-zinc-500 font-light text-sm md:text-base leading-loose mb-10">
+              <div className="font-serif border-l-2 border-[#C8935A]/40 pl-7 space-y-5 text-zinc-500 font-light text-sm md:text-base leading-loose mb-10">
                 <p>
                   เราเริ่มต้นจากแก่นแท้ของต้นไม้ คุณค่าที่สำคัญที่สุดของมันคือความเป็นธรรมชาติ
                   ต้นไม้เติบโตอย่างเป็นธรรมชาติตลอดช่วงเวลายาวนาน เราไม่รบกวนรูปทรง ลวดลาย
@@ -216,6 +216,7 @@ export default function HomePage() {
                   { n: "<12%", l: "ความชื้นมาตรฐาน" },
                 ].map(s => (
                   <div key={s.l} className="text-center">
+                    {/* ตัวเลขใส่ font-serif หรูหรา */}
                     <p className="font-serif text-3xl text-[#1C1917]">{s.n}</p>
                     <p className="text-xs text-zinc-400 uppercase tracking-wider mt-0.5">{s.l}</p>
                   </div>
@@ -236,6 +237,7 @@ export default function HomePage() {
           <FadeIn>
             <div className="text-center mb-20">
               <Tag text="Our Collections" />
+              {/* ใส่ font-serif ตามความต้องการ */}
               <h2 className="font-serif text-[#1C1917] mb-3" style={{ fontSize: 'clamp(2rem, 4vw, 4rem)' }}>คอลเลกชันของเรา</h2>
               <p className="text-zinc-400 text-sm uppercase tracking-[0.35em]">ไม้แผ่นธรรมชาติ & ศิลปะเรซินสมัยใหม่</p>
             </div>
@@ -260,7 +262,7 @@ export default function HomePage() {
                     <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
                     <div className="absolute bottom-0 left-0 right-0 p-5 translate-y-2 group-hover:translate-y-0 transition-transform duration-500">
                       <p className="text-[9px] text-white/60 uppercase tracking-widest mb-1">{w.note}</p>
-                      <p className="text-white font-serif text-xl leading-tight">{w.th}</p>
+                      <p className="font-serif text-white text-xl leading-tight">{w.th}</p>
                       <p className="text-white/60 text-[10px] mt-0.5">{w.en}</p>
                     </div>
                   </Link>
@@ -288,7 +290,7 @@ export default function HomePage() {
                     <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
                     <div className="absolute bottom-0 left-0 right-0 p-5 translate-y-2 group-hover:translate-y-0 transition-transform duration-500">
                       <p className="text-[9px] text-white/60 uppercase tracking-widest mb-1">ZENSLABS</p>
-                      <p className="text-white font-serif text-xl leading-tight">{w.th}</p>
+                      <p className="font-serif text-white text-xl leading-tight">{w.th}</p>
                       <p className="text-white/60 text-[10px] mt-0.5">{w.en}</p>
                     </div>
                   </Link>
@@ -349,7 +351,6 @@ export default function HomePage() {
           </div>
         </div>
       </section>
-
 
       {/* ══════════════════════════════
           MANUFACTURING PROCESS
