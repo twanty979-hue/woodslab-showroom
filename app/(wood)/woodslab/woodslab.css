@@ -2,26 +2,31 @@
 
 /* --- 1. GLOBAL VARIABLES & RESET --- */
 :root {
-  --bg: #ffffff;
-  --card-bg: #f8f8f8;
-  --text-main: #1a1a1a;
-  --text-muted: #666666;
-  --accent: #c5a059;
-  --line: #e5e5e5;
-  --btn-hover: #f2f2f2;
-  --font-serif: 'Playfair Display', 'DB Heavent', sans-serif;
-  --font-sans: 'Playfair Display', 'DB Heavent', sans-serif;
+  /* Brand Palette */
+  --bg:        #eaded0;  /* Dusty Beige */
+  --card-bg:   #e9dbd4;  /* Soft Sand */
+  --text-main: #2c291a;  /* Deep Olive Black */
+  --text-muted: #847860; /* Mocha */
+  --accent:    #802e19;  /* Terracotta Clay */
+  --accent2:   #6e4739;  /* Walnut Brown */
+  --line:      #d4c4b8;  /* border tone */
+  --btn-hover: #dfd0c4;
+
+  /* DBHeavent = ชื่อต้องตรงกับ @font-face ใน globals.css */
+  --font-serif: 'Playfair Display', 'DBHeavent', sans-serif;
+  --font-sans:  'Playfair Display', 'DBHeavent', sans-serif;
   --max: 1400px;
 }
 
 [data-theme="dark"] {
-  --bg: #0f0f0f;
-  --card-bg: #161616;
-  --text-main: #e0e0e0;
-  --text-muted: #888888;
-  --accent: #d4af37;
-  --line: #2a2a2a;
-  --btn-hover: #222;
+  --bg:        #1a1714;
+  --card-bg:   #231f1b;
+  --text-main: #e8ddd5;
+  --text-muted: #a89880;
+  --accent:    #c05a3a;
+  --accent2:   #9a6b5a;
+  --line:      #352e28;
+  --btn-hover: #2a2420;
 }
 
 * { box-sizing: border-box; outline: none; }
@@ -45,10 +50,12 @@ header {
 }
 
 h1 {
-  font-family: var(--font-serif);
+  font-family: 'Playfair Display', serif;
   font-size: 3.5rem;
   font-weight: 500;
-  text-transform: uppercase;
+  font-style: normal;
+  text-transform: none;
+  letter-spacing: 0.02em;
   margin: 0;
 }
 h1 span { color: var(--accent); }

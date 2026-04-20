@@ -19,12 +19,23 @@
   --font-main: 'Playfair Display', 'DBHeavent', sans-serif;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
+/* Tailwind v4 — override font-size scale ผ่าน CSS variables โดยตรง */
+@theme {
   --font-sans: var(--font-main);
   --font-serif: var(--font-main);
-  --font-mono: var(--font-geist-mono);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+
+  --text-xs:   0.9375rem;  /* 15px */
+  --text-sm:   1.125rem;   /* 18px */
+  --text-base: 1.25rem;    /* 20px */
+  --text-lg:   1.375rem;   /* 22px */
+  --text-xl:   1.625rem;   /* 26px */
+  --text-2xl:  2rem;       /* 32px */
+  --text-3xl:  2.5rem;     /* 40px */
+  --text-4xl:  3rem;       /* 48px */
+  --text-5xl:  3.75rem;    /* 60px */
+  --text-6xl:  4.5rem;     /* 72px */
 }
 
 @media (prefers-color-scheme: dark) {
@@ -38,6 +49,8 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-main);
+  font-size: var(--text-base);
+  line-height: 1.8;
 }
 
 /* Animation สำหรับไอคอนตะกร้า (อันเดิมของหลานจ้ะ) */
