@@ -13,11 +13,13 @@ const LIST_SELECT = "id,name,sku,barcode,price,image_url,status,specs,updated_at
 // --- Helper Functions ---
 export type CategoryKey = 'all' | 'slabs' | 'rough' | 'leg' | 'chair'
 
-const getCategoryFilter = (category: CategoryKey): { categoryId?: string; specType?: string; excludeCategoryId?: string } => {
+const EXCLUDED_CATEGORIES = ['rough_wood', 'prop']
+
+const getCategoryFilter = (category: CategoryKey): { categoryId?: string; specType?: string; excludeCategories?: string[] } => {
   if (category === 'rough') return { categoryId: 'rough_wood' }
   if (category === 'leg') return { specType: 'Leg' }
   if (category === 'chair') return { specType: 'Chair/Stool' }
-  if (category === 'all') return { excludeCategoryId: 'rough_wood' }
+  if (category === 'all') return { excludeCategories: EXCLUDED_CATEGORIES }
   return { categoryId: 'SLABS' } // 'slabs'
 }
 // 👇👇👇 เอามาวางตรงนี้เลยจ้ะหลานชาย 👇👇👇
@@ -86,7 +88,7 @@ export async function getProducts(
   discountFilter?: number[] | 'all' | null
 ) {
   const offset = page * limit
-  const { categoryId, specType, excludeCategoryId } = getCategoryFilter(category)
+  const { categoryId, specType, excludeCategories } = getCategoryFilter(category)
 
   const LIST_SELECT_ACTIVE = "id,name,sku,barcode,price,image_url,status,specs,updated_at,created_at,category_id,stock(qty)"
 
@@ -103,7 +105,7 @@ export async function getProducts(
     .order('updated_at', { ascending: false })
 
   if (categoryId) query = query.eq('category_id', categoryId)
-  if (excludeCategoryId) query = query.neq('category_id', excludeCategoryId)
+  if (excludeCategories?.length) query = query.not('category_id', 'in', `(${excludeCategories.join(',')})`)
   if (specType) query = query.eq('specs->>spec_type', specType)
 
   // --- Discount filter (server-side) ---
@@ -147,7 +149,7 @@ export async function getProducts(
 
 // 1.3 ✅ ดึงค่า Min/Max สำหรับ Slider
 export async function getMinMax(col: string, category: CategoryKey = 'all') {
-  const { categoryId, specType, excludeCategoryId } = getCategoryFilter(category)
+  const { categoryId, specType, excludeCategories } = getCategoryFilter(category)
 
   let qMin = supabaseServer.from(TABLE).select(col).not(col, 'is', null).order(col, { ascending: true }).limit(1).single()
   let qMax = supabaseServer.from(TABLE).select(col).not(col, 'is', null).order(col, { ascending: false }).limit(1).single()
@@ -165,11 +167,11 @@ export async function getMinMax(col: string, category: CategoryKey = 'all') {
 
 // 1.4 ✅ ดึงค่าสำหรับ Histogram
 export async function getRangeValues(col: string, category: CategoryKey = 'all') {
-  const { categoryId, specType, excludeCategoryId } = getCategoryFilter(category)
+  const { categoryId, specType, excludeCategories } = getCategoryFilter(category)
 
   let query = supabaseServer.from(TABLE).select(col).not(col, 'is', null).limit(2000)
   if (categoryId) query = query.eq('category_id', categoryId)
-  if (excludeCategoryId) query = query.neq('category_id', excludeCategoryId)
+  if (excludeCategories?.length) query = query.not('category_id', 'in', `(${excludeCategories.join(',')})`)
   if (specType) query = query.eq('specs->>spec_type', specType)
 
   const { data } = await query
@@ -180,11 +182,11 @@ export async function getRangeValues(col: string, category: CategoryKey = 'all')
 
 // 1.5 ✅ ดึงตัวเลือกสำหรับ Dropdown
 export async function getDistinctOptions(category: CategoryKey = 'all') {
-  const { categoryId, specType, excludeCategoryId } = getCategoryFilter(category)
+  const { categoryId, specType, excludeCategories } = getCategoryFilter(category)
 
   let query = supabaseServer.from(TABLE).select('specs').limit(3000)
   if (categoryId) query = query.eq('category_id', categoryId)
-  if (excludeCategoryId) query = query.neq('category_id', excludeCategoryId)
+  if (excludeCategories?.length) query = query.not('category_id', 'in', `(${excludeCategories.join(',')})`)
   if (specType) query = query.eq('specs->>spec_type', specType)
 
   const { data } = await query
