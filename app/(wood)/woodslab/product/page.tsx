@@ -250,6 +250,10 @@ function ProductContent() {
       rows.push({ label, value: valDisplay })
     })
 
+    if (product.weight != null && product.weight !== 0) {
+      rows.push({ label: "Weight", value: `${product.weight} kg` })
+    }
+
     const meta = getStatusMeta(product)
     if (meta.key !== "available") {
       rows.push({ label: "Status", value: meta.label, color: "#e74c3c" })
@@ -587,31 +591,31 @@ const maxStock = getStockQty(product)
         @media (max-width: 1024px) { .rec-grid { grid-template-columns: repeat(3, 1fr); } }
         @media (max-width: 768px) { .rec-grid { grid-template-columns: repeat(2, 1fr); } }
 
-        .rec-card { display: block; text-decoration: none; color: inherit; transition: transform 0.2s; }
+        .rec-card { display: block; text-decoration: none; color: inherit; transition: transform 0.2s; overflow: hidden; position: relative; background: var(--card-bg); }
         .rec-card:hover { transform: translateY(-5px); }
-        
-        .rec-img { 
-            width: 100%; 
+        .rec-card:hover .rec-img img { transform: scale(1.05); }
+
+        .rec-img {
+            width: 100%;
             aspect-ratio: 1 / 1;
-            background: #f9f9f9; 
-            position: relative; 
-            border-radius: 6px; 
-            overflow: hidden; 
-            margin-bottom: 12px;
+            background: var(--card-bg);
+            position: relative;
+            overflow: hidden;
             display: flex; align-items: center; justify-content: center;
         }
-        .rec-img img { 
-    width: 100%; 
-    height: 100%; 
-    object-fit: cover; 
-    object-position: center; 
-}
+        .rec-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            transition: transform 0.5s ease;
+        }
         .rec-noimg { color: #ccc; font-size: 0.8rem; }
-        
-        .rec-body { text-align: center; }
-        .rec-name { font-weight: 600; font-size: 0.95rem; margin-bottom: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-        .rec-size { font-size: 0.8rem; color: #888; margin-bottom: 6px; }
-        .rec-price { font-weight: 700; color: #000; font-size: 1rem; }
+
+        .rec-body { padding: 15px; text-align: center; background: var(--bg); border-top: 1px solid var(--line); }
+        .rec-name { font-weight: 600; font-size: 0.9rem; margin-bottom: 6px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-family: var(--font-serif); }
+        .rec-size { font-size: 0.75rem; color: var(--text-muted); margin-bottom: 8px; font-variant-numeric: lining-nums tabular-nums; }
+        .rec-price { font-weight: 700; color: var(--text-main); font-size: 1rem; font-variant-numeric: lining-nums tabular-nums; }
 
         /* Status Badges Overlay */
         .status-overlay { position: absolute; top:0; left:0; right:0; bottom:0; background: rgba(255,255,255,0.6); display: flex; align-items: center; justify-content: center; z-index: 10; backdrop-filter: blur(2px); }
@@ -724,10 +728,11 @@ const maxStock = getStockQty(product)
                       padding: '13px 0',
                       width: '60%',
                       textAlign: 'right',
-                      fontFamily: "'Playfair Display', serif",
+                      fontFamily: "'Prompt', sans-serif",
                       fontWeight: 400,
                       fontSize: '0.85rem',
                       color: r.color || '#2c2c2c',
+                      fontVariantNumeric: 'lining-nums tabular-nums',
                     }}>{r.value}</td>
                   </tr>
                 ))}
